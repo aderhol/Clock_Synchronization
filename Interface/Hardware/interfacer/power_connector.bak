@@ -1,0 +1,350 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:auxiliary
+LIBS:interfacer-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 5 5
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Barrel_Jack J?
+U 1 1 59CAB5CB
+P 4150 3950
+F 0 "J?" H 4150 4160 50  0000 C CNN
+F 1 "5VDC barrel jack " H 4150 3775 50  0000 C CNN
+F 2 "" H 4200 3910 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/g-s/(g-s)_dcs-5521-5.pdf" H 4200 3910 50  0001 C CNN
+F 4 "DCS-5521-5" H 4150 3950 60  0001 C CNN "Part#"
+F 5 "43-07-67" H 4150 3950 60  0001 C CNN "Lomex"
+	1    4150 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 3950 4600 3950
+Wire Wire Line
+	4600 3950 4600 4250
+Wire Wire Line
+	4450 4050 4600 4050
+Connection ~ 4600 4050
+$Comp
+L CP C?
+U 1 1 59CAC501
+P 7400 4050
+F 0 "C?" H 7425 4150 50  0000 L CNN
+F 1 "1000u" H 7425 3950 50  0000 L CNN
+F 2 "" H 7438 3900 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(eln)_rvj.pdf" H 7400 4050 50  0001 C CNN
+F 4 "RVJ-10V102MH10U-R2" H 7400 4050 60  0001 C CNN "part#"
+F 5 "91-01-02" H 7400 4050 60  0001 C CNN "Lomex"
+	1    7400 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 59CAC519
+P 7800 3800
+F 0 "#PWR?" H 7800 3650 50  0001 C CNN
+F 1 "+5V" H 7800 3940 50  0000 C CNN
+F 2 "" H 7800 3800 50  0001 C CNN
+F 3 "" H 7800 3800 50  0001 C CNN
+	1    7800 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 59CAC525
+P 7800 4300
+F 0 "#PWR?" H 7800 4050 50  0001 C CNN
+F 1 "GND" H 7800 4150 50  0000 C CNN
+F 2 "" H 7800 4300 50  0001 C CNN
+F 3 "" H 7800 4300 50  0001 C CNN
+	1    7800 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L CP C?
+U 1 1 59CAC52D
+P 3400 1900
+F 0 "C?" H 3425 2000 50  0000 L CNN
+F 1 "1000u" H 3425 1800 50  0000 L CNN
+F 2 "" H 3438 1750 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(eln)_rvj.pdf" H 3400 1900 50  0001 C CNN
+F 4 "RVJ-10V102MH10U-R2" H 3400 1900 60  0001 C CNN "part#"
+F 5 "91-01-02" H 3400 1900 60  0001 C CNN "Lomex"
+	1    3400 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3400 1750 3400 1700
+$Comp
+L R R?
+U 1 1 59CAC547
+P 7100 2250
+F 0 "R?" V 7180 2250 50  0000 C CNN
+F 1 "2k" V 7100 2250 50  0000 C CNN
+F 2 "" V 7030 2250 50  0001 C CNN
+F 3 "" H 7100 2250 50  0001 C CNN
+F 4 "2012" V 7100 2250 60  0001 C CNN "Package"
+	1    7100 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 59CAC54F
+P 7500 2250
+F 0 "R?" V 7580 2250 50  0000 C CNN
+F 1 "1k5" V 7500 2250 50  0000 C CNN
+F 2 "" V 7430 2250 50  0001 C CNN
+F 3 "" H 7500 2250 50  0001 C CNN
+F 4 "2012" V 7500 2250 60  0001 C CNN "Package"
+	1    7500 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED_ALT D?
+U 1 1 59CAC559
+P 7100 1900
+F 0 "D?" H 7100 2000 50  0000 C CNN
+F 1 "blue" H 7100 1800 50  0000 C CNN
+F 2 "" H 7100 1900 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(fyl)_fyls-0805ubc.pdf" H 7100 1900 50  0001 C CNN
+F 4 "2012" H 7100 1900 60  0001 C CNN "Package"
+F 5 "FYLS-0805UBC" H 7100 1900 60  0001 C CNN "part#"
+F 6 "95-01-58" H 7100 1900 60  0001 C CNN "Lomex"
+	1    7100 1900
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	7100 2050 7100 2100
+$Comp
+L LED_ALT D?
+U 1 1 59CAC564
+P 7500 1900
+F 0 "D?" H 7500 2000 50  0000 C CNN
+F 1 "red" H 7500 1800 50  0000 C CNN
+F 2 "" H 7500 1900 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(kin)_kp-2012surc.pdf" H 7500 1900 50  0001 C CNN
+F 4 "2012" H 7500 1900 60  0001 C CNN "Package"
+F 5 "KP-2012SURC" H 7500 1900 60  0001 C CNN "part#"
+F 6 "95-01-14" H 7500 1900 60  0001 C CNN "Lomex"
+	1    7500 1900
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	7500 2050 7500 2100
+Wire Wire Line
+	7100 2400 7100 2450
+Wire Wire Line
+	7100 2450 7500 2450
+Wire Wire Line
+	7500 2450 7500 2400
+Wire Wire Line
+	7100 1750 7100 1700
+Wire Wire Line
+	7500 1750 7500 1700
+Wire Wire Line
+	7300 2450 7300 2500
+Connection ~ 7300 2450
+$Comp
+L GND #PWR?
+U 1 1 59CAC573
+P 7300 2500
+F 0 "#PWR?" H 7300 2250 50  0001 C CNN
+F 1 "GND" H 7300 2350 50  0000 C CNN
+F 2 "" H 7300 2500 50  0001 C CNN
+F 3 "" H 7300 2500 50  0001 C CNN
+	1    7300 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 59CAC579
+P 7100 1700
+F 0 "#PWR?" H 7100 1550 50  0001 C CNN
+F 1 "+5V" H 7100 1840 50  0000 C CNN
+F 2 "" H 7100 1700 50  0001 C CNN
+F 3 "" H 7100 1700 50  0001 C CNN
+	1    7100 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR?
+U 1 1 59CAC57F
+P 7500 1700
+F 0 "#PWR?" H 7500 1550 50  0001 C CNN
+F 1 "+3V3" H 7500 1840 50  0000 C CNN
+F 2 "" H 7500 1700 50  0001 C CNN
+F 3 "" H 7500 1700 50  0001 C CNN
+	1    7500 1700
+	1    0    0    -1  
+$EndComp
+Text Notes 6850 1500 0    60   ~ 0
+power indicator LEDs
+$Comp
+L D_Schottky_ALT D?
+U 1 1 59CAC6F0
+P 4850 3850
+F 0 "D?" H 4850 3950 50  0000 C CNN
+F 1 "1A - 20V" H 4850 3750 50  0000 C CNN
+F 2 "" H 4850 3850 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/(tsc)_ss1xxl.pdf" H 4850 3850 50  0001 C CNN
+F 4 "83-01-27" H 4850 3850 60  0001 C CNN "Lomex"
+	1    4850 3850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4450 3850 4700 3850
+$Comp
+L L7805 U?
+U 1 1 59CAC7BE
+P 5700 3850
+F 0 "U?" H 5550 3975 50  0000 C CNN
+F 1 "LM2940S-5.0" H 5700 3975 50  0000 L CNN
+F 2 "" H 5725 3700 50  0001 L CIN
+F 3 "https://lomex.hu/pdf/lm2940.pdf" H 5700 3800 50  0001 C CNN
+F 4 "TO-263" H 5700 3850 60  0001 C CNN "Package"
+F 5 "89-05-86" H 5700 3850 60  0001 C CNN "Lomex"
+	1    5700 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6000 3850 6600 3850
+Wire Wire Line
+	7200 3850 7800 3850
+$Comp
+L C C?
+U 1 1 59CACD3E
+P 6350 4050
+F 0 "C?" H 6375 4150 50  0000 L CNN
+F 1 "22u" H 6375 3950 50  0000 L CNN
+F 2 "" H 6388 3900 50  0001 C CNN
+F 3 "" H 6350 4050 50  0001 C CNN
+F 4 "0.1-1 ohm" H 6350 4050 60  0001 C CNN "ESR"
+	1    6350 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6350 4250 6350 4200
+$Comp
+L C C?
+U 1 1 59CAD166
+P 5100 4050
+F 0 "C?" H 5125 4150 50  0000 L CNN
+F 1 "0.47u" H 5125 3950 50  0000 L CNN
+F 2 "" H 5138 3900 50  0001 C CNN
+F 3 "" H 5100 4050 50  0001 C CNN
+	1    5100 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4600 4250 7800 4250
+Wire Wire Line
+	5100 4200 5100 4250
+Connection ~ 5100 4250
+Wire Wire Line
+	5000 3850 5400 3850
+Wire Wire Line
+	5100 3900 5100 3850
+Connection ~ 5100 3850
+Wire Wire Line
+	6350 3850 6350 3900
+Connection ~ 6350 3850
+Wire Wire Line
+	5700 4150 5700 4250
+Connection ~ 5700 4250
+Wire Wire Line
+	7400 3850 7400 3900
+Connection ~ 7400 3850
+Wire Wire Line
+	7400 4250 7400 4200
+Connection ~ 6350 4250
+Wire Wire Line
+	7800 4250 7800 4300
+Connection ~ 7400 4250
+Wire Wire Line
+	7800 3850 7800 3800
+Text Notes 4000 1500 2    60   ~ 0
+3V3 board-lelvel-bypass
+Wire Wire Line
+	3400 2050 3400 2100
+$Comp
+L GND #PWR?
+U 1 1 59CADF89
+P 3400 2100
+F 0 "#PWR?" H 3400 1850 50  0001 C CNN
+F 1 "GND" H 3400 1950 50  0000 C CNN
+F 2 "" H 3400 2100 50  0001 C CNN
+F 3 "" H 3400 2100 50  0001 C CNN
+	1    3400 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR?
+U 1 1 59CADFB3
+P 3400 1700
+F 0 "#PWR?" H 3400 1550 50  0001 C CNN
+F 1 "+3V3" H 3400 1840 50  0000 C CNN
+F 2 "" H 3400 1700 50  0001 C CNN
+F 3 "" H 3400 1700 50  0001 C CNN
+	1    3400 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Jumper JP?
+U 1 1 59CAE463
+P 6900 3400
+F 0 "JP?" H 6900 3550 50  0000 C CNN
+F 1 "5V main" H 6900 3320 50  0000 C CNN
+F 2 "" H 6900 3400 50  0001 C CNN
+F 3 "" H 6900 3400 50  0001 C CNN
+	1    6900 3400
+	1    0    0    -1  
+$EndComp
+Text Notes 7500 3200 2    60   ~ 0
+current measurement point
+Wire Wire Line
+	6600 3850 6600 3400
+Wire Wire Line
+	7200 3400 7200 3850
+$EndSCHEMATC

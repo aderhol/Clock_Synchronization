@@ -1,0 +1,643 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:auxiliary
+LIBS:interfacer-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 9
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Sheet
+S 1250 750  2050 1200
+U 59C55F91
+F0 "main connector" 60
+F1 "main_connector.sch" 60
+F2 "Line_Rx" I L 1250 950 60 
+F3 "Line_Tx" O L 1250 850 60 
+F4 "GPS_2_Rx" I R 3300 1850 60 
+F5 "GPS_2_Tx" O R 3300 1750 60 
+F6 "GPS_1_Rx" I R 3300 1450 60 
+F7 "GPS_1_Tx" O R 3300 1350 60 
+F8 "PPS_direct" I R 3300 850 60 
+F9 "PPS_feedback" I R 3300 950 60 
+F10 "I2C_SCL" O L 1250 1450 60 
+F11 "I2C_SDA" B L 1250 1550 60 
+F12 "GPS_selector" I R 3300 1150 60 
+F13 "PPS_direct_heartbeat" O L 1250 1150 60 
+F14 "PPS_feedback_heartbeat" O L 1250 1250 60 
+F15 "GPS_1_reset" O R 3300 1550 60 
+$EndSheet
+$Sheet
+S 1250 3900 1750 600 
+U 59C6A83F
+F0 "debugging LEDs" 60
+F1 "debugging_LEDs.sch" 60
+F2 "LED_Tx_line" I L 1250 4400 60 
+F3 "LED_Tx_GPS_1" I R 3000 4400 60 
+F4 "LED_Tx_GPS_2" I R 3000 4100 60 
+F5 "LED_Rx_line" I L 1250 4300 60 
+F6 "LED_Rx_GPS_1" I R 3000 4300 60 
+F7 "LED_Rx_GPS_2" I R 3000 4000 60 
+F8 "LED_PPS_feedback" I L 1250 4000 60 
+F9 "LED_PPS_direct" I L 1250 4100 60 
+$EndSheet
+$Sheet
+S 1250 3350 1300 300 
+U 59C723F6
+F0 "temperature sensor" 60
+F1 "temperature sensor.sch" 60
+F2 "temp_SDA" B L 1250 3450 60 
+F3 "temp_SCL" I L 1250 3550 60 
+$EndSheet
+$Sheet
+S 10000 650  1100 350 
+U 59CAB586
+F0 "power supply" 60
+F1 "power_supply.sch" 60
+$EndSheet
+$Comp
+L R R1
+U 1 1 59CB6F5B
+P 1700 2900
+F 0 "R1" V 1780 2900 50  0000 C CNN
+F 1 "2k" V 1700 2900 50  0000 C CNN
+F 2 "auxiliary:0805_2012" V 1630 2900 50  0001 C CNN
+F 3 "" H 1700 2900 50  0001 C CNN
+F 4 "2012" V 1700 2900 60  0001 C CNN "Package"
+	1    1700 2900
+	0    1    1    0   
+$EndComp
+$Comp
+L R R2
+U 1 1 59CB720D
+P 1700 3100
+F 0 "R2" V 1780 3100 50  0000 C CNN
+F 1 "2k" V 1700 3100 50  0000 C CNN
+F 2 "auxiliary:0805_2012" V 1630 3100 50  0001 C CNN
+F 3 "" H 1700 3100 50  0001 C CNN
+F 4 "2012" V 1700 3100 60  0001 C CNN "Package"
+	1    1700 3100
+	0    1    1    0   
+$EndComp
+$Comp
+L +3V3 #PWR01
+U 1 1 59CB72A5
+P 2000 2850
+F 0 "#PWR01" H 2000 2700 50  0001 C CNN
+F 1 "+3V3" H 2000 2990 50  0000 C CNN
+F 2 "" H 2000 2850 50  0001 C CNN
+F 3 "" H 2000 2850 50  0001 C CNN
+	1    2000 2850
+	1    0    0    -1  
+$EndComp
+$Sheet
+S 5050 2800 750  500 
+U 59CD34B2
+F0 "GPS2" 60
+F1 "GPS_2.sch" 60
+F2 "PPS" O L 5050 2900 60 
+F3 "3V3" U R 5800 2900 60 
+F4 "UART_Tx" O L 5050 3200 60 
+F5 "UART_Rx" I L 5050 3100 60 
+$EndSheet
+$Comp
+L GND #PWR02
+U 1 1 59CD8ED1
+P 1450 2650
+F 0 "#PWR02" H 1450 2400 50  0001 C CNN
+F 1 "GND" H 1450 2500 50  0000 C CNN
+F 2 "" H 1450 2650 50  0001 C CNN
+F 3 "" H 1450 2650 50  0001 C CNN
+	1    1450 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_01x04_Male J1
+U 1 1 59CDAC23
+P 1750 2400
+F 0 "J1" H 1750 2600 50  0000 C CNN
+F 1 "I2C" H 1750 2100 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_KK-6410-04_04x2.54mm_Straight" H 1750 2400 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/(g-s)_ncw254-xxs.pdf" H 1750 2400 50  0001 C CNN
+F 4 "NCW254-04S" H 1750 2400 60  0001 C CNN "Part#"
+F 5 " 43-08-97" H 1750 2400 60  0001 C CNN "Lomex"
+	1    1750 2400
+	-1   0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR03
+U 1 1 59CDBC4D
+P 1450 2250
+F 0 "#PWR03" H 1450 2100 50  0001 C CNN
+F 1 "+3V3" H 1450 2390 50  0000 C CNN
+F 2 "" H 1450 2250 50  0001 C CNN
+F 3 "" H 1450 2250 50  0001 C CNN
+	1    1450 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR04
+U 1 1 59CDDAE9
+P 1450 5250
+F 0 "#PWR04" H 1450 5000 50  0001 C CNN
+F 1 "GND" H 1450 5100 50  0000 C CNN
+F 2 "" H 1450 5250 50  0001 C CNN
+F 3 "" H 1450 5250 50  0001 C CNN
+	1    1450 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_01x04_Male J2
+U 1 1 59CDDAF1
+P 1750 5000
+F 0 "J2" H 1750 5200 50  0000 C CNN
+F 1 "line UART" H 1750 4700 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_KK-6410-04_04x2.54mm_Straight" H 1750 5000 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/(g-s)_ncw254-xxs.pdf" H 1750 5000 50  0001 C CNN
+F 4 "NCW254-04S" H 1750 5000 60  0001 C CNN "Part#"
+F 5 " 43-08-97" H 1750 5000 60  0001 C CNN "Lomex"
+	1    1750 5000
+	-1   0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR05
+U 1 1 59CDDAF8
+P 1450 4850
+F 0 "#PWR05" H 1450 4700 50  0001 C CNN
+F 1 "+3V3" H 1450 4990 50  0000 C CNN
+F 2 "" H 1450 4850 50  0001 C CNN
+F 3 "" H 1450 4850 50  0001 C CNN
+	1    1450 4850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR06
+U 1 1 59CDEC2D
+P 3100 2650
+F 0 "#PWR06" H 3100 2400 50  0001 C CNN
+F 1 "GND" H 3100 2500 50  0000 C CNN
+F 2 "" H 3100 2650 50  0001 C CNN
+F 3 "" H 3100 2650 50  0001 C CNN
+	1    3100 2650
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Conn_01x04_Male J3
+U 1 1 59CDEC35
+P 2800 2400
+F 0 "J3" H 2800 2600 50  0000 C CNN
+F 1 "GPS2 UART" H 2800 2100 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_KK-6410-04_04x2.54mm_Straight" H 2800 2400 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/(g-s)_ncw254-xxs.pdf" H 2800 2400 50  0001 C CNN
+F 4 "NCW254-04S" H 2800 2400 60  0001 C CNN "Part#"
+F 5 " 43-08-97" H 2800 2400 60  0001 C CNN "Lomex"
+	1    2800 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR07
+U 1 1 59CDEC3C
+P 3100 2250
+F 0 "#PWR07" H 3100 2100 50  0001 C CNN
+F 1 "+3V3" H 3100 2390 50  0000 C CNN
+F 2 "" H 3100 2250 50  0001 C CNN
+F 3 "" H 3100 2250 50  0001 C CNN
+	1    3100 2250
+	-1   0    0    -1  
+$EndComp
+$Comp
+L GND #PWR08
+U 1 1 59CDF607
+P 3100 3700
+F 0 "#PWR08" H 3100 3450 50  0001 C CNN
+F 1 "GND" H 3100 3550 50  0000 C CNN
+F 2 "" H 3100 3700 50  0001 C CNN
+F 3 "" H 3100 3700 50  0001 C CNN
+	1    3100 3700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Conn_01x04_Male J4
+U 1 1 59CDF60F
+P 2800 3450
+F 0 "J4" H 2800 3650 50  0000 C CNN
+F 1 "GPS1 UART" H 2800 3150 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_KK-6410-04_04x2.54mm_Straight" H 2800 3450 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/(g-s)_ncw254-xxs.pdf" H 2800 3450 50  0001 C CNN
+F 4 "NCW254-04S" H 2800 3450 60  0001 C CNN "Part#"
+F 5 " 43-08-97" H 2800 3450 60  0001 C CNN "Lomex"
+	1    2800 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR09
+U 1 1 59CDF616
+P 3100 3300
+F 0 "#PWR09" H 3100 3150 50  0001 C CNN
+F 1 "+3V3" H 3100 3440 50  0000 C CNN
+F 2 "" H 3100 3300 50  0001 C CNN
+F 3 "" H 3100 3300 50  0001 C CNN
+	1    3100 3300
+	-1   0    0    -1  
+$EndComp
+$Sheet
+S 5050 1250 800  700 
+U 59CE1096
+F0 "GPS1" 60
+F1 "GPS_1.sch" 60
+F2 "PPS" O L 5050 1850 60 
+F3 "3V3" U R 5850 1350 60 
+F4 "UART_Tx" O L 5050 1450 60 
+F5 "UART_Rx" I L 5050 1350 60 
+F6 "Reset" I L 5050 1650 60 
+$EndSheet
+$Sheet
+S 5050 750  1050 300 
+U 59CE7B0A
+F0 "50-Ohm PPS" 60
+F1 "50-Ohm_PPS.sch" 60
+F2 "PPS_direct" I L 5050 850 60 
+F3 "PPS_feedback" I L 5050 950 60 
+$EndSheet
+$Sheet
+S 1650 5650 1250 300 
+U 59CE8A6D
+F0 "RS-422 interface" 60
+F1 "RS-422_interface.sch" 60
+F2 "UART_Rx" I L 1650 5850 60 
+F3 "UART_Tx" O L 1650 5750 60 
+F4 "PPS_in" I R 2900 5850 60 
+F5 "PPS_out" O R 2900 5750 60 
+$EndSheet
+$Comp
+L Jumper_NC_Dual JP1
+U 1 1 59CF191D
+P 6100 2300
+F 0 "JP1" H 6150 2200 50  0000 L CNN
+F 1 "GPS selector" H 6100 2400 50  0000 C BNN
+F 2 "auxiliary:3P_2.54_jumper" H 6100 2300 50  0001 C CNN
+F 3 "" H 6100 2300 50  0001 C CNN
+	1    6100 2300
+	0    -1   1    0   
+$EndComp
+$Comp
+L +3V3 #PWR010
+U 1 1 59CF2AEF
+P 6350 2250
+F 0 "#PWR010" H 6350 2100 50  0001 C CNN
+F 1 "+3V3" H 6350 2390 50  0000 C CNN
+F 2 "" H 6350 2250 50  0001 C CNN
+F 3 "" H 6350 2250 50  0001 C CNN
+	1    6350 2250
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	3700 950  3700 5750
+Wire Wire Line
+	3300 950  5050 950 
+Wire Wire Line
+	3300 1850 3400 1850
+Wire Wire Line
+	3300 1750 3450 1750
+Connection ~ 3550 3550
+Wire Wire Line
+	3000 3550 3550 3550
+Connection ~ 3600 3450
+Wire Wire Line
+	3000 3450 3600 3450
+Connection ~ 3400 2500
+Wire Wire Line
+	3000 2500 3400 2500
+Connection ~ 3450 2400
+Wire Wire Line
+	3450 2400 3000 2400
+Connection ~ 850  5100
+Wire Wire Line
+	850  5100 1550 5100
+Connection ~ 800  5000
+Wire Wire Line
+	800  5000 1550 5000
+Wire Wire Line
+	3100 3350 3100 3300
+Wire Wire Line
+	3000 3350 3100 3350
+Wire Wire Line
+	3100 3650 3100 3700
+Wire Wire Line
+	3000 3650 3100 3650
+Wire Wire Line
+	3100 2300 3100 2250
+Wire Wire Line
+	3000 2300 3100 2300
+Wire Wire Line
+	3100 2600 3100 2650
+Wire Wire Line
+	3000 2600 3100 2600
+Wire Wire Line
+	1450 4900 1450 4850
+Wire Wire Line
+	1550 4900 1450 4900
+Wire Wire Line
+	1450 5200 1450 5250
+Wire Wire Line
+	1550 5200 1450 5200
+Wire Wire Line
+	1450 2300 1450 2250
+Wire Wire Line
+	1550 2300 1450 2300
+Wire Wire Line
+	1450 2600 1450 2650
+Wire Wire Line
+	1550 2600 1450 2600
+Connection ~ 1150 2500
+Wire Wire Line
+	1550 2500 1150 2500
+Connection ~ 1100 2400
+Wire Wire Line
+	1550 2400 1100 2400
+Wire Wire Line
+	3300 1350 5050 1350
+Wire Wire Line
+	3600 1350 3600 4400
+Wire Wire Line
+	3600 4400 3000 4400
+Wire Wire Line
+	3550 4300 3000 4300
+Wire Wire Line
+	3550 1450 3550 4300
+Wire Wire Line
+	3300 1450 5050 1450
+Wire Wire Line
+	3450 1750 3450 4100
+Wire Wire Line
+	3450 4100 3000 4100
+Wire Wire Line
+	3400 4000 3000 4000
+Wire Wire Line
+	3400 1850 3400 4000
+Connection ~ 850  4300
+Wire Wire Line
+	1250 4300 850  4300
+Connection ~ 800  4400
+Wire Wire Line
+	1250 4400 800  4400
+Wire Wire Line
+	800  850  800  5850
+Wire Wire Line
+	1250 850  800  850 
+Wire Wire Line
+	850  950  850  5750
+Wire Wire Line
+	1250 950  850  950 
+Wire Wire Line
+	950  4100 1250 4100
+Wire Wire Line
+	950  1150 950  4100
+Wire Wire Line
+	1250 1150 950  1150
+Wire Wire Line
+	1000 4000 1250 4000
+Wire Wire Line
+	1000 1250 1000 4000
+Wire Wire Line
+	1250 1250 1000 1250
+Wire Wire Line
+	1150 1550 1250 1550
+Wire Wire Line
+	1100 1450 1250 1450
+Connection ~ 1100 3100
+Wire Wire Line
+	1100 3100 1550 3100
+Connection ~ 1150 2900
+Wire Wire Line
+	1150 2900 1550 2900
+Connection ~ 1900 3000
+Wire Wire Line
+	2000 3000 2000 2850
+Wire Wire Line
+	1900 3000 2000 3000
+Wire Wire Line
+	1900 3100 1850 3100
+Wire Wire Line
+	1900 2900 1900 3100
+Wire Wire Line
+	1850 2900 1900 2900
+Wire Wire Line
+	1100 3550 1250 3550
+Wire Wire Line
+	1100 1450 1100 3550
+Wire Wire Line
+	1150 3450 1250 3450
+Wire Wire Line
+	1150 1550 1150 3450
+Wire Wire Line
+	3300 850  5050 850 
+Wire Wire Line
+	6200 2300 6350 2300
+Wire Wire Line
+	6350 2300 6350 2250
+Connection ~ 3600 1350
+Wire Wire Line
+	5050 1850 4750 1850
+Connection ~ 3550 1450
+Wire Wire Line
+	3300 1550 4900 1550
+Wire Wire Line
+	4900 1550 4900 1650
+Wire Wire Line
+	4900 1650 5050 1650
+Wire Wire Line
+	3300 1150 6100 1150
+Wire Wire Line
+	4750 2900 5050 2900
+Wire Wire Line
+	5850 1350 6100 1350
+Wire Wire Line
+	6100 1150 6100 2050
+Wire Wire Line
+	6100 2900 5800 2900
+Wire Wire Line
+	6100 2550 6100 2900
+Wire Wire Line
+	5050 3100 3450 3100
+Connection ~ 3450 3100
+Wire Wire Line
+	5050 3200 3400 3200
+Connection ~ 3400 3200
+Connection ~ 6100 1350
+Wire Wire Line
+	850  5750 1650 5750
+Wire Wire Line
+	800  5850 1650 5850
+Wire Wire Line
+	3700 5750 2900 5750
+Connection ~ 3750 850 
+Connection ~ 3700 950 
+$Comp
+L GND #PWR011
+U 1 1 59D2641C
+P 4050 4000
+F 0 "#PWR011" H 4050 3750 50  0001 C CNN
+F 1 "GND" H 4050 3850 50  0000 C CNN
+F 2 "" H 4050 4000 50  0001 C CNN
+F 3 "" H 4050 4000 50  0001 C CNN
+	1    4050 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L TEST_2P J7
+U 1 1 59D27D8A
+P 4400 3750
+F 0 "J7" H 4400 3810 50  0000 C CNN
+F 1 "PPS feedback" H 4400 3680 50  0000 C CNN
+F 2 "auxiliary:2P_2.54_SMD" H 4400 3750 50  0001 C CNN
+F 3 "" H 4400 3750 50  0001 C CNN
+	1    4400 3750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4400 3450 4400 3550
+Wire Wire Line
+	4400 3950 4400 4000
+$Comp
+L GND #PWR012
+U 1 1 59D27D92
+P 4400 4000
+F 0 "#PWR012" H 4400 3750 50  0001 C CNN
+F 1 "GND" H 4400 3850 50  0000 C CNN
+F 2 "" H 4400 4000 50  0001 C CNN
+F 3 "" H 4400 4000 50  0001 C CNN
+	1    4400 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_02x03_Counter_Clockwise J6
+U 1 1 59D4E28B
+P 4350 2300
+F 0 "J6" H 4400 2500 50  0000 C CNN
+F 1 "PPS selecctor" H 4400 2100 50  0000 C CNN
+F 2 "auxiliary:Pin_Header_Straight_2x03_Pitch2.54mm_SMD_clockwise-numbering" H 4350 2300 50  0001 C CNN
+F 3 "" H 4350 2300 50  0001 C CNN
+F 4 "2.45mm_SMD" H 4350 2300 60  0001 C CNN "Package"
+F 5 "jumper" H 4350 2300 60  0001 C CNN "Purpose"
+	1    4350 2300
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	3750 850  3750 5850
+Wire Wire Line
+	3750 5850 2900 5850
+Wire Wire Line
+	4050 3950 4050 4000
+Wire Wire Line
+	4050 3500 4050 3550
+$Comp
+L TEST_2P J5
+U 1 1 59D25F00
+P 4050 3750
+F 0 "J5" H 4050 3810 50  0000 C CNN
+F 1 "PPS direct" H 4050 3680 50  0000 C CNN
+F 2 "auxiliary:2P_2.54_SMD" H 4050 3750 50  0001 C CNN
+F 3 "" H 4050 3750 50  0001 C CNN
+	1    4050 3750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4750 1850 4750 2200
+Wire Wire Line
+	4750 2200 4550 2200
+Wire Wire Line
+	4550 2400 4750 2400
+Wire Wire Line
+	4750 2400 4750 2900
+NoConn ~ 4050 2200
+NoConn ~ 4050 2400
+Wire Wire Line
+	4050 2300 3700 2300
+Connection ~ 3700 2300
+Wire Wire Line
+	4550 2300 4650 2300
+Wire Wire Line
+	4650 2300 4650 2000
+Wire Wire Line
+	4650 2000 3750 2000
+Connection ~ 3750 2000
+Wire Wire Line
+	4050 3500 3750 3500
+Connection ~ 3750 3500
+Wire Wire Line
+	4400 3450 3700 3450
+Connection ~ 3700 3450
+Wire Wire Line
+	6100 2800 6350 2800
+Connection ~ 6100 2800
+Wire Wire Line
+	6100 2000 6350 2000
+Connection ~ 6100 2000
+$Comp
+L PWR_FLAG #FLG013
+U 1 1 59D916BC
+P 6350 1950
+F 0 "#FLG013" H 6350 2025 50  0001 C CNN
+F 1 "PWR_FLAG" H 6350 2100 50  0000 C CNN
+F 2 "" H 6350 1950 50  0001 C CNN
+F 3 "" H 6350 1950 50  0001 C CNN
+	1    6350 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG014
+U 1 1 59D91953
+P 6350 2750
+F 0 "#FLG014" H 6350 2825 50  0001 C CNN
+F 1 "PWR_FLAG" H 6350 2900 50  0000 C CNN
+F 2 "" H 6350 2750 50  0001 C CNN
+F 3 "" H 6350 2750 50  0001 C CNN
+	1    6350 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6350 2000 6350 1950
+Wire Wire Line
+	6350 2800 6350 2750
+$EndSCHEMATC

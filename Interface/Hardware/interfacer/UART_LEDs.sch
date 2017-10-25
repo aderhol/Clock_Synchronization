@@ -1,0 +1,323 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:auxiliary
+LIBS:interfacer-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 5
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L LED_ALT D3
+U 1 1 59C6CFD4
+P 5950 3250
+F 0 "D3" H 5950 3350 50  0000 C CNN
+F 1 "green" H 5950 3150 50  0000 C CNN
+F 2 "" H 5950 3250 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(fyl)_fyls-0805pgc.pdf" H 5950 3250 50  0001 C CNN
+F 4 "FYLS-0805PGC" H 5950 3250 60  0001 C CNN "Part#"
+F 5 "95-02-77" H 5950 3250 60  0001 C CNN "Lomex"
+F 6 "2012" H 5950 3250 60  0001 C CNN "Package"
+	1    5950 3250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L LED_ALT D4
+U 1 1 59C6D00A
+P 6300 3350
+F 0 "D4" H 6300 3450 50  0000 C CNN
+F 1 "yellow" H 6300 3250 50  0000 C CNN
+F 2 "" H 6300 3350 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/kp212syc.pdf" H 6300 3350 50  0001 C CNN
+F 4 "KP-2012SYC" H 6300 3350 60  0001 C CNN "Part#"
+F 5 "95-00-58" H 6300 3350 60  0001 C CNN "Lomex"
+F 6 "2012" H 6300 3350 60  0001 C CNN "Package"
+	1    6300 3350
+	0    -1   -1   0   
+$EndComp
+Text HLabel 5050 3800 0    60   Input ~ 0
+LED_Tx_line
+Text HLabel 5050 4000 0    60   Input ~ 0
+LED_Tx_GPS_1
+Text HLabel 5050 4200 0    60   Input ~ 0
+LED_Tx_GPS_2
+$Comp
+L ULN2003A U1
+U 1 1 59C6E5AA
+P 5500 4100
+F 0 "U1" H 5500 4625 50  0000 C CNN
+F 1 "ULN2003A" H 5500 4550 50  0000 C CNN
+F 2 "" H 5550 3450 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/uln2003a.pdf" H 5600 4000 50  0001 C CNN
+F 4 "89-01-69" H 5500 4100 60  0001 C CNN "Lomex"
+F 5 "SOIC-16" H 5500 4100 60  0001 C CNN "Package"
+	1    5500 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR011
+U 1 1 59C6E786
+P 5500 4850
+F 0 "#PWR011" H 5500 4600 50  0001 C CNN
+F 1 "GND" H 5500 4700 50  0000 C CNN
+F 2 "" H 5500 4850 50  0001 C CNN
+F 3 "" H 5500 4850 50  0001 C CNN
+	1    5500 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5500 4800 5500 4850
+NoConn ~ 5900 4600
+Wire Wire Line
+	5100 3800 5050 3800
+Wire Wire Line
+	5100 3900 5050 3900
+Wire Wire Line
+	5100 4000 5050 4000
+Wire Wire Line
+	5100 4100 5050 4100
+Wire Wire Line
+	5100 4200 5050 4200
+Wire Wire Line
+	5100 4300 5050 4300
+Wire Wire Line
+	5100 4400 5050 4400
+NoConn ~ 5900 4400
+NoConn ~ 5050 4400
+Text HLabel 5050 3900 0    60   Input ~ 0
+LED_Rx_line
+Text HLabel 5050 4100 0    60   Input ~ 0
+LED_Rx_GPS_1
+Text HLabel 5050 4300 0    60   Input ~ 0
+LED_Rx_GPS_2
+$Comp
+L R R3
+U 1 1 59C6F0F6
+P 5950 3600
+F 0 "R3" V 6030 3600 50  0000 C CNN
+F 1 "220" V 5950 3600 50  0000 C CNN
+F 2 "" V 5880 3600 50  0001 C CNN
+F 3 "" H 5950 3600 50  0001 C CNN
+	1    5950 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R4
+U 1 1 59C6F338
+P 6300 3700
+F 0 "R4" V 6380 3700 50  0000 C CNN
+F 1 "390" V 6300 3700 50  0000 C CNN
+F 2 "" V 6230 3700 50  0001 C CNN
+F 3 "" H 6300 3700 50  0001 C CNN
+	1    6300 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 3800 5950 3750
+Wire Wire Line
+	5950 3450 5950 3400
+Wire Wire Line
+	6300 3500 6300 3550
+Wire Wire Line
+	6300 3850 6300 3900
+$Comp
+L LED_ALT D5
+U 1 1 59C6FFC0
+P 6750 3450
+F 0 "D5" H 6750 3550 50  0000 C CNN
+F 1 "green" H 6750 3350 50  0000 C CNN
+F 2 "" H 6750 3450 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(fyl)_fyls-0805pgc.pdf" H 6750 3450 50  0001 C CNN
+F 4 "FYLS-0805PGC" H 6750 3450 60  0001 C CNN "Part#"
+F 5 "95-02-77" H 6750 3450 60  0001 C CNN "Lomex"
+F 6 "2012" H 6750 3450 60  0001 C CNN "Package"
+	1    6750 3450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L LED_ALT D6
+U 1 1 59C6FFC9
+P 7100 3550
+F 0 "D6" H 7100 3650 50  0000 C CNN
+F 1 "yellow" H 7100 3450 50  0000 C CNN
+F 2 "" H 7100 3550 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/kp212syc.pdf" H 7100 3550 50  0001 C CNN
+F 4 "KP-2012SYC" H 7100 3550 60  0001 C CNN "Part#"
+F 5 "95-00-58" H 7100 3550 60  0001 C CNN "Lomex"
+F 6 "2012" H 7100 3550 60  0001 C CNN "Package"
+	1    7100 3550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R R5
+U 1 1 59C6FFCF
+P 6750 3800
+F 0 "R5" V 6830 3800 50  0000 C CNN
+F 1 "220" V 6750 3800 50  0000 C CNN
+F 2 "" V 6680 3800 50  0001 C CNN
+F 3 "" H 6750 3800 50  0001 C CNN
+	1    6750 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R6
+U 1 1 59C6FFD5
+P 7100 3900
+F 0 "R6" V 7180 3900 50  0000 C CNN
+F 1 "390" V 7100 3900 50  0000 C CNN
+F 2 "" V 7030 3900 50  0001 C CNN
+F 3 "" H 7100 3900 50  0001 C CNN
+	1    7100 3900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6750 4000 6750 3950
+Wire Wire Line
+	6750 3650 6750 3600
+Wire Wire Line
+	7100 3700 7100 3750
+Wire Wire Line
+	7100 4050 7100 4100
+$Comp
+L LED_ALT D7
+U 1 1 59C70110
+P 7550 3650
+F 0 "D7" H 7550 3750 50  0000 C CNN
+F 1 "green" H 7550 3550 50  0000 C CNN
+F 2 "" H 7550 3650 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/(fyl)_fyls-0805pgc.pdf" H 7550 3650 50  0001 C CNN
+F 4 "FYLS-0805PGC" H 7550 3650 60  0001 C CNN "Part#"
+F 5 "95-02-77" H 7550 3650 60  0001 C CNN "Lomex"
+F 6 "2012" H 7550 3650 60  0001 C CNN "Package"
+	1    7550 3650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L LED_ALT D8
+U 1 1 59C70119
+P 7900 3750
+F 0 "D8" H 7900 3850 50  0000 C CNN
+F 1 "yellow" H 7900 3650 50  0000 C CNN
+F 2 "" H 7900 3750 50  0001 C CNN
+F 3 "http://lomex.hu/pdf/kp212syc.pdf" H 7900 3750 50  0001 C CNN
+F 4 "KP-2012SYC" H 7900 3750 60  0001 C CNN "Part#"
+F 5 "95-00-58" H 7900 3750 60  0001 C CNN "Lomex"
+F 6 "2012" H 7900 3750 60  0001 C CNN "Package"
+	1    7900 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R R7
+U 1 1 59C7011F
+P 7550 4000
+F 0 "R7" V 7630 4000 50  0000 C CNN
+F 1 "220" V 7550 4000 50  0000 C CNN
+F 2 "" V 7480 4000 50  0001 C CNN
+F 3 "" H 7550 4000 50  0001 C CNN
+	1    7550 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R8
+U 1 1 59C70125
+P 7900 4100
+F 0 "R8" V 7980 4100 50  0000 C CNN
+F 1 "390" V 7900 4100 50  0000 C CNN
+F 2 "" V 7830 4100 50  0001 C CNN
+F 3 "" H 7900 4100 50  0001 C CNN
+	1    7900 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 4200 7550 4150
+Wire Wire Line
+	7550 3850 7550 3800
+Wire Wire Line
+	7900 3900 7900 3950
+Wire Wire Line
+	7900 4250 7900 4300
+Wire Wire Line
+	5900 3800 5950 3800
+Wire Wire Line
+	6300 3900 5900 3900
+Wire Wire Line
+	5900 4000 6750 4000
+Wire Wire Line
+	7100 4100 5900 4100
+Wire Wire Line
+	5900 4200 7550 4200
+Wire Wire Line
+	7900 4300 5900 4300
+Wire Wire Line
+	5950 3100 5950 3050
+Wire Wire Line
+	5950 3050 8050 3050
+Wire Wire Line
+	7900 3050 7900 3600
+Wire Wire Line
+	7550 3500 7550 3050
+Connection ~ 7550 3050
+Wire Wire Line
+	7100 3400 7100 3050
+Connection ~ 7100 3050
+Wire Wire Line
+	6750 3300 6750 3050
+Connection ~ 6750 3050
+Wire Wire Line
+	6300 3200 6300 3050
+Connection ~ 6300 3050
+Wire Wire Line
+	8050 3050 8050 2950
+Connection ~ 7900 3050
+$Comp
+L +5V #PWR012
+U 1 1 59C70691
+P 8050 2950
+F 0 "#PWR012" H 8050 2800 50  0001 C CNN
+F 1 "+5V" H 8050 3090 50  0000 C CNN
+F 2 "" H 8050 2950 50  0001 C CNN
+F 3 "" H 8050 2950 50  0001 C CNN
+	1    8050 2950
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

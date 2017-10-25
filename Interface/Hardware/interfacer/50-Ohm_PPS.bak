@@ -1,0 +1,230 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:auxiliary
+LIBS:interfacer-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 8 9
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text HLabel 4850 2950 0    60   Input ~ 0
+PPS_direct
+Text HLabel 4850 4650 0    60   Input ~ 0
+PPS_feedback
+$Comp
+L Conn_Coaxial J14
+U 1 1 59D0B501
+P 6300 3250
+F 0 "J14" H 6310 3370 50  0000 C CNN
+F 1 "PPS direct" V 6415 3250 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_SMA_Jack_Edge_Mount" H 6300 3250 50  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2048966.pdf?_ga=2.255982403.977653632.1507050986-872559284.1503258578" H 6300 3250 50  0001 C CNN
+F 4 " 43-28-28" H 6300 3250 60  0001 C CNN "Lomex"
+	1    6300 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_Coaxial J15
+U 1 1 59D0B8A8
+P 6300 4950
+F 0 "J15" H 6310 5070 50  0000 C CNN
+F 1 "PPS feedback" V 6415 4950 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_SMA_Jack_Edge_Mount" H 6300 4950 50  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2048966.pdf?_ga=2.255982403.977653632.1507050986-872559284.1503258578" H 6300 4950 50  0001 C CNN
+F 4 " 43-28-28" H 6300 4950 60  0001 C CNN "Lomex"
+	1    6300 4950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 5150 6300 5400
+$Comp
+L GND #PWR048
+U 1 1 59D0B8AF
+P 6300 5400
+F 0 "#PWR048" H 6300 5150 50  0001 C CNN
+F 1 "GND" H 6300 5250 50  0000 C CNN
+F 2 "" H 6300 5400 50  0001 C CNN
+F 3 "" H 6300 5400 50  0001 C CNN
+	1    6300 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R15
+U 1 1 59D0BB0C
+P 5550 2500
+F 0 "R15" V 5630 2500 50  0000 C CNN
+F 1 "50" V 5550 2500 50  0000 C CNN
+F 2 "auxiliary:0805_2012" V 5480 2500 50  0001 C CNN
+F 3 "" H 5550 2500 50  0001 C CNN
+F 4 "2012" V 5550 2500 60  0001 C CNN "Package"
+	1    5550 2500
+	-1   0    0    1   
+$EndComp
+$Comp
+L Q_NPN_BEC Q1
+U 1 1 59D29C10
+P 5450 2950
+F 0 "Q1" H 5650 3000 50  0000 L CNN
+F 1 "BSV52LT1G" H 5650 2900 50  0000 L CNN
+F 2 "TO_SOT_Packages_SMD:SOT-23" H 5650 3050 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/onibsv52.pdf" H 5450 2950 50  0001 C CNN
+F 4 "SOT-23" H 5450 2950 60  0001 C CNN "Package"
+F 5 "86-00-58" H 5450 2950 60  0001 C CNN "Lomex"
+	1    5450 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 2650 5550 2750
+Wire Wire Line
+	5550 2350 5550 2300
+$Comp
+L +5V #PWR049
+U 1 1 59D29C88
+P 5550 2300
+F 0 "#PWR049" H 5550 2150 50  0001 C CNN
+F 1 "+5V" H 5550 2440 50  0000 C CNN
+F 2 "" H 5550 2300 50  0001 C CNN
+F 3 "" H 5550 2300 50  0001 C CNN
+	1    5550 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4850 2950 5250 2950
+Wire Wire Line
+	5550 3150 5550 3300
+Wire Wire Line
+	5550 3250 6150 3250
+$Comp
+L R R17
+U 1 1 59D2A1D2
+P 5550 4200
+F 0 "R17" V 5630 4200 50  0000 C CNN
+F 1 "50" V 5550 4200 50  0000 C CNN
+F 2 "auxiliary:0805_2012" V 5480 4200 50  0001 C CNN
+F 3 "" H 5550 4200 50  0001 C CNN
+F 4 "2012" V 5550 4200 60  0001 C CNN "Package"
+	1    5550 4200
+	-1   0    0    1   
+$EndComp
+$Comp
+L Q_NPN_BEC Q2
+U 1 1 59D2A1DA
+P 5450 4650
+F 0 "Q2" H 5650 4700 50  0000 L CNN
+F 1 "BSV52LT1G" H 5650 4600 50  0000 L CNN
+F 2 "TO_SOT_Packages_SMD:SOT-23" H 5650 4750 50  0001 C CNN
+F 3 "https://lomex.hu/pdf/onibsv52.pdf" H 5450 4650 50  0001 C CNN
+F 4 "SOT-23" H 5450 4650 60  0001 C CNN "Package"
+F 5 "86-00-58" H 5450 4650 60  0001 C CNN "Lomex"
+	1    5450 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 4350 5550 4450
+Wire Wire Line
+	5550 4050 5550 4000
+$Comp
+L +5V #PWR050
+U 1 1 59D2A1E2
+P 5550 4000
+F 0 "#PWR050" H 5550 3850 50  0001 C CNN
+F 1 "+5V" H 5550 4140 50  0000 C CNN
+F 2 "" H 5550 4000 50  0001 C CNN
+F 3 "" H 5550 4000 50  0001 C CNN
+	1    5550 4000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4850 4650 5250 4650
+Wire Wire Line
+	5550 4850 5550 5000
+Wire Wire Line
+	5550 4950 6150 4950
+$Comp
+L R R18
+U 1 1 59D3071E
+P 5550 5150
+F 0 "R18" V 5630 5150 50  0000 C CNN
+F 1 "inf" V 5550 5150 50  0000 C CNN
+F 2 "auxiliary:0805_2012" V 5480 5150 50  0001 C CNN
+F 3 "" H 5550 5150 50  0001 C CNN
+	1    5550 5150
+	1    0    0    -1  
+$EndComp
+Connection ~ 5550 4950
+Wire Wire Line
+	5550 5300 5550 5350
+Wire Wire Line
+	5550 5350 6300 5350
+Connection ~ 6300 5350
+Wire Wire Line
+	6300 3450 6300 3700
+$Comp
+L GND #PWR051
+U 1 1 59D30A68
+P 6300 3700
+F 0 "#PWR051" H 6300 3450 50  0001 C CNN
+F 1 "GND" H 6300 3550 50  0000 C CNN
+F 2 "" H 6300 3700 50  0001 C CNN
+F 3 "" H 6300 3700 50  0001 C CNN
+	1    6300 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R16
+U 1 1 59D30A6E
+P 5550 3450
+F 0 "R16" V 5630 3450 50  0000 C CNN
+F 1 "inf" V 5550 3450 50  0000 C CNN
+F 2 "auxiliary:0805_2012" V 5480 3450 50  0001 C CNN
+F 3 "" H 5550 3450 50  0001 C CNN
+	1    5550 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 3600 5550 3650
+Wire Wire Line
+	5550 3650 6300 3650
+Connection ~ 6300 3650
+Connection ~ 5550 3250
+$EndSCHEMATC
