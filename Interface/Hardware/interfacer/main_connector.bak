@@ -50,36 +50,36 @@ $EndDescr
 $Comp
 L Conn_02x10_Top_Bottom J8
 U 1 1 59C56441
-P 4300 4050
-F 0 "J8" H 4350 4550 50  0000 C CNN
-F 1 "left bottom conn" H 4350 3450 50  0000 C CNN
-F 2 "auxiliary:Pin_Header_Straight_2x10_Pitch2.54mm_column-numbering" H 4300 4050 50  0001 C CNN
-F 3 "" H 4300 4050 50  0001 C CNN
-F 4 "left (on bottom)" H 4300 4050 60  0001 C CNN "Side"
-F 5 "2x10 pin header" H 4300 4050 60  0001 C CNN "Package"
-	1    4300 4050
+P 4000 4050
+F 0 "J8" H 4050 4550 50  0000 C CNN
+F 1 "left bottom conn" H 4050 3450 50  0000 C CNN
+F 2 "auxiliary:Pin_Header_Straight_2x10_Pitch2.54mm_column-numbering" H 4000 4050 50  0001 C CNN
+F 3 "" H 4000 4050 50  0001 C CNN
+F 4 "left (on bottom)" H 4000 4050 60  0001 C CNN "Side"
+F 5 "2x10 pin header" H 4000 4050 60  0001 C CNN "Package"
+	1    4000 4050
 	-1   0    0    -1  
 $EndComp
 $Comp
 L GND #PWR015
 U 1 1 59C56845
-P 3650 3700
-F 0 "#PWR015" H 3650 3450 50  0001 C CNN
-F 1 "GND" H 3650 3550 50  0000 C CNN
-F 2 "" H 3650 3700 50  0001 C CNN
-F 3 "" H 3650 3700 50  0001 C CNN
-	1    3650 3700
+P 3350 3700
+F 0 "#PWR015" H 3350 3450 50  0001 C CNN
+F 1 "GND" H 3350 3550 50  0000 C CNN
+F 2 "" H 3350 3700 50  0001 C CNN
+F 3 "" H 3350 3700 50  0001 C CNN
+	1    3350 3700
 	1    0    0    -1  
 $EndComp
 $Comp
 L GND #PWR016
 U 1 1 59C568C0
-P 6250 3800
-F 0 "#PWR016" H 6250 3550 50  0001 C CNN
-F 1 "GND" H 6250 3650 50  0000 C CNN
-F 2 "" H 6250 3800 50  0001 C CNN
-F 3 "" H 6250 3800 50  0001 C CNN
-	1    6250 3800
+P 6000 3800
+F 0 "#PWR016" H 6000 3550 50  0001 C CNN
+F 1 "GND" H 6000 3650 50  0000 C CNN
+F 2 "" H 6000 3800 50  0001 C CNN
+F 3 "" H 6000 3800 50  0001 C CNN
+	1    6000 3800
 	1    0    0    -1  
 $EndComp
 Text HLabel 7850 4450 2    60   Output ~ 0
@@ -90,69 +90,69 @@ Text HLabel 7850 3850 2    60   Input ~ 0
 Line_Rx
 Text HLabel 7850 3950 2    60   Output ~ 0
 Line_Tx
-Text HLabel 6250 4450 0    60   Input ~ 0
+Text HLabel 6050 4450 0    60   Input ~ 0
 GPS_2_Rx
-Text HLabel 6250 4550 0    60   Output ~ 0
+Text HLabel 6050 4550 0    60   Output ~ 0
 GPS_2_Tx
-Text HLabel 6250 4050 0    60   Input ~ 0
+Text HLabel 6050 4050 0    60   Input ~ 0
 GPS_1_Rx
-Text HLabel 6250 4150 0    60   Output ~ 0
+Text HLabel 6050 4150 0    60   Output ~ 0
 GPS_1_Tx
-Text HLabel 4850 3950 2    60   Input ~ 0
+Text HLabel 4550 3950 2    60   Input ~ 0
 PPS_direct
-Text HLabel 4850 4050 2    60   Input ~ 0
+Text HLabel 4550 4050 2    60   Input ~ 0
 PPS_feedback
-NoConn ~ 4000 4550
+NoConn ~ 3700 4550
 NoConn ~ 7100 3750
 NoConn ~ 7100 4250
 NoConn ~ 7100 4350
 NoConn ~ 6600 4350
 NoConn ~ 6600 3950
 NoConn ~ 6600 3850
-NoConn ~ 4500 4350
-NoConn ~ 4000 3750
-NoConn ~ 4500 3750
-NoConn ~ 4000 3850
-NoConn ~ 4500 3850
-NoConn ~ 4500 4150
-NoConn ~ 4000 4150
-NoConn ~ 4500 4250
-NoConn ~ 4000 4250
-NoConn ~ 4500 4450
-NoConn ~ 4500 4550
-NoConn ~ 4000 4050
-NoConn ~ 4000 3950
-Text Label 4000 4050 2    60   ~ 0
+NoConn ~ 4200 4350
+NoConn ~ 3700 3750
+NoConn ~ 4200 3750
+NoConn ~ 3700 3850
+NoConn ~ 4200 3850
+NoConn ~ 4200 4150
+NoConn ~ 3700 4150
+NoConn ~ 4200 4250
+NoConn ~ 3700 4250
+NoConn ~ 4200 4450
+NoConn ~ 4200 4550
+NoConn ~ 3700 4050
+NoConn ~ 3700 3950
+Text Label 3700 4050 2    60   ~ 0
 reset
 Text Label 7100 3850 0    60   ~ 0
-U6Rx
+U6Rx/PP0
 Text Label 7100 3950 0    60   ~ 0
-U6Tx
+U6Tx/PP1
 Text Label 6600 4050 2    60   ~ 0
-U4Rx
+U4Rx/PK0
 Text Label 6600 4150 2    60   ~ 0
-U4Tx
+U4Tx/PK1
 Text Label 6600 4450 2    60   ~ 0
-U3Rx
+U3Rx/PA4
 Text Label 6600 4550 2    60   ~ 0
-U3Tx
-Text Label 4500 3950 0    60   ~ 0
+U3Tx/PA5
+Text Label 4200 3950 0    60   ~ 0
 T2CCP0
-Text Label 4500 4050 0    60   ~ 0
+Text Label 4200 4050 0    60   ~ 0
 T2CCP1
 Text Label 7100 4450 0    60   ~ 0
-I2C2SCL
+I2C2SCL/PN5
 Text Label 7100 4550 0    60   ~ 0
-I2C2SDA
-Text HLabel 3650 4450 0    60   Output ~ 0
+I2C2SDA/PN4
+Text HLabel 3350 4450 0    60   Output ~ 0
 PPS_direct_heartbeat
-Text HLabel 3650 4350 0    60   Output ~ 0
+Text HLabel 3350 4350 0    60   Output ~ 0
 PPS_feedback_heartbeat
-Text Label 4000 4350 2    60   ~ 0
+Text Label 3700 4350 2    60   ~ 0
 PP3
-Text Label 4000 4450 2    60   ~ 0
+Text Label 3700 4450 2    60   ~ 0
 PQ1
-Text HLabel 6250 4250 0    60   Input ~ 0
+Text HLabel 6050 4250 0    60   Input ~ 0
 GPS_selector
 Text Label 6600 4250 2    60   ~ 0
 PK2
@@ -208,9 +208,9 @@ Text Notes 7500 2550 0    60   ~ 0
 current measurement points
 Text Notes 5750 5400 0    60   ~ 0
 PK2 of GPS_selector shall be weakly pulled down\nby the microcontroller.\n\nShould GPS_selector stay logic high\nwhen the corresponding GPS module is unpowerd\n(due to the input protection diode on its UART Rx pin),\nthis pin can be configured as AIN18 - analog input
-Text Label 4500 3650 0    60   ~ 0
+Text Label 4200 3650 0    60   ~ 0
 PG1
-Text HLabel 4850 3650 2    60   Output ~ 0
+Text HLabel 4550 3650 2    60   Output ~ 0
 GPS_1_reset
 $Comp
 L PWR_FLAG #FLG019
@@ -301,43 +301,47 @@ $EndComp
 Text Notes 2250 1050 0    60   ~ 0
 mechanical connectors
 Wire Wire Line
-	6250 3750 6250 3800
+	6000 3750 6000 3800
 Wire Wire Line
-	4500 3950 4850 3950
+	4200 3950 4550 3950
 Wire Wire Line
-	4500 4050 4850 4050
+	4200 4050 4550 4050
 Wire Wire Line
-	7100 3850 7850 3850
+	7100 3850 7750 3850
 Wire Wire Line
-	7100 3950 7850 3950
+	7750 3850 7850 3850
+Wire Wire Line
+	7100 3950 7700 3950
+Wire Wire Line
+	7700 3950 7850 3950
 Wire Wire Line
 	7100 4450 7850 4450
 Wire Wire Line
 	7100 4550 7850 4550
 Wire Wire Line
-	6600 4550 6250 4550
+	6600 4550 6050 4550
 Wire Wire Line
-	6600 4450 6250 4450
+	6600 4450 6050 4450
 Wire Wire Line
-	6600 4150 6250 4150
+	6600 4150 6050 4150
 Wire Wire Line
-	6600 4050 6250 4050
+	6600 4050 6050 4050
 Wire Wire Line
-	4000 3650 3650 3650
+	3700 3650 3350 3650
 Wire Wire Line
-	3650 3650 3650 3700
+	3350 3650 3350 3700
 Wire Wire Line
-	6250 3750 6600 3750
+	6000 3750 6600 3750
 Wire Wire Line
 	7100 3650 7650 3650
 Wire Wire Line
 	6600 3650 6250 3650
 Wire Wire Line
-	4000 4450 3650 4450
+	3700 4450 3350 4450
 Wire Wire Line
-	4000 4350 3650 4350
+	3700 4350 3350 4350
 Wire Wire Line
-	6600 4250 6250 4250
+	6600 4250 6050 4250
 Wire Wire Line
 	8350 3200 8400 3200
 Wire Wire Line
@@ -353,10 +357,12 @@ Wire Wire Line
 Wire Wire Line
 	6250 2800 6250 3650
 Wire Wire Line
-	4500 3650 4850 3650
+	4200 3650 4550 3650
 Connection ~ 8400 3200
 Wire Wire Line
-	8400 3150 8400 3250
+	8400 3150 8400 3200
+Wire Wire Line
+	8400 3200 8400 3250
 Wire Wire Line
 	2050 1250 1900 1250
 Wire Wire Line
@@ -403,4 +409,18 @@ Wire Wire Line
 Wire Wire Line
 	7750 4150 7750 3850
 Connection ~ 7750 3850
+Text Notes 7750 4200 0    60   ~ 0
+this is useless\na cross cable is needed instead
+Text Label 6600 3850 2    60   ~ 0
+PB4
+Text Label 6600 3950 2    60   ~ 0
+PB5
+Text Label 7100 3750 0    60   ~ 0
+PD2
+Text Label 7100 4350 0    60   ~ 0
+PP4
+Text Label 7100 4250 0    60   ~ 0
+PQ0
+Text Label 6600 4350 2    60   ~ 0
+PK3
 $EndSCHEMATC
