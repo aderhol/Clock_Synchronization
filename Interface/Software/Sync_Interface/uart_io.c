@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "uart_io.h"
+#include "driverlib/interrupt.h"
 #include "driverlib/uart.h"
 #include "driverlib/pin_map.h"  //pin names
 #include "driverlib/gpio.h" //GPIO
@@ -18,7 +19,7 @@ typedef struct {
     uint8_t data[RINGBUFFER_SIZE];
 } ringbuffer;
 
-static ringbuffer uartwriteBuffer_0, uartreadBuffer_0, uartwriteBuffer_4, uartreadBuffer_4;
+static ringbuffer uartwriteBuffer_0, uartreadBuffer_0, uartwriteBuffer_4, uartreadBuffer_4, uartwriteBuffer_6, uartreadBuffer_6;
 
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
 
@@ -36,6 +37,12 @@ static inline ringbuffer* baseToBuffer(uint32_t base, bool write)
             return &uartwriteBuffer_4;
         else
             return &uartreadBuffer_4;
+        break;
+    case UART6_BASE:
+        if(write)
+            return &uartwriteBuffer_6;
+        else
+            return &uartreadBuffer_6;
         break;
     default:
         return NULL;
@@ -68,38 +75,49 @@ void UARTInit(void)
 {//4-es, R> k0, T> k1
 
     //enable UART pins
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOK);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);        //USB
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOK);        //GPS_1
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOP);        //line
 
     //enables UART
     SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_UART4);
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_UART4)); //wait for UART to be ready
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART6);
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_UART6)); //wait for UART to be ready
 
     //sets pins as UART pins
     GPIOPinConfigure(GPIO_PA0_U0RX);
     GPIOPinConfigure(GPIO_PA1_U0TX);
     GPIOPinConfigure(GPIO_PK0_U4RX);
     GPIOPinConfigure(GPIO_PK1_U4TX);
+    GPIOPinConfigure(GPIO_PP0_U6RX);
+    GPIOPinConfigure(GPIO_PP1_U6TX);
 
     //configures UART pins (input/output)
     GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
     GPIOPinTypeUART(GPIO_PORTK_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    GPIOPinTypeUART(GPIO_PORTP_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
     //configure the UART modules
-    //UART0: baud-rate: 115200, 8-bit, 1 STOP-bit, no parity-bit
-    //UART4: baud-rate: 9600, 8-bit, 1 STOP-bit, no parity-bit
+    //UART0(USB):   baud-rate: 115200,  8-bit, 1 STOP-bit, no parity-bit
+    //UART4(GPS_1): baud-rate: 9600,    8-bit, 1 STOP-bit, no parity-bit
+    //UART6(line):  baud-rate: 115200,  8-bit, 1 STOP-bit, no parity-bit
     //AND enables UART
     UARTConfigSetExpClk(UART0_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
     UARTConfigSetExpClk(UART4_BASE, SYS_CLK_FREQ_ACTUAL, 9600, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+    UARTConfigSetExpClk(UART6_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
     UARTFIFOEnable(UART0_BASE); //enables FIFOs
     UARTFIFOEnable(UART4_BASE); //enables FIFOs
+    UARTFIFOEnable(UART6_BASE); //enables FIFOs
     UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
     UARTFIFOLevelSet(UART4_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
+    UARTFIFOLevelSet(UART6_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
     UARTIntEnable(UART0_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX)); //unmasks Receive Timeout and receive FIFO interrupts
     UARTIntEnable(UART4_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX));
+    UARTIntEnable(UART6_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX)); //unmasks Receive Timeout and receive FIFO interrupts
     IntEnable(INT_UART0);   //enables unmasked UART interrupts
     IntEnable(INT_UART4);
+    IntEnable(INT_UART6);
 
     uartreadBuffer_0.writePtr = 0;
     uartreadBuffer_0.readPtr = 0;
@@ -110,6 +128,11 @@ void UARTInit(void)
     uartreadBuffer_4.readPtr = 0;
     uartwriteBuffer_4.writePtr = 0;
     uartwriteBuffer_4.readPtr = 0;
+
+    uartreadBuffer_6.writePtr = 0;
+    uartreadBuffer_6.readPtr = 0;
+    uartwriteBuffer_6.writePtr = 0;
+    uartwriteBuffer_6.readPtr = 0;
 }
 
 void UARTPutch(uint32_t base, uint8_t ch) {
@@ -186,6 +209,28 @@ void ISR_UART4(void)
     }
 }
 
+void ISR_UART6(void)
+{
+    uint32_t callers = UARTIntStatus(UART6_BASE, true);  //determines what triggered the interrupt
+    UARTIntClear(UART6_BASE, callers);  //clears the interrupt flags
+
+    if(callers & (UART_INT_RT | UART_INT_RX)){
+        while(UARTCharsAvail(UART6_BASE)){
+            if(ringptrinc(uartreadBuffer_6.writePtr) != uartreadBuffer_6.readPtr) { //if the buffer is not full
+                uartreadBuffer_6.data[uartreadBuffer_6.writePtr] = UARTCharGetNonBlocking(UART6_BASE);
+                uartreadBuffer_6.writePtr = ringptrinc(uartreadBuffer_6.writePtr);
+            }
+            else
+                UARTCharGetNonBlocking(UART6_BASE);
+        }
+    }
+
+    if(callers & UART_INT_TX) {
+        while((uartwriteBuffer_6.readPtr != uartwriteBuffer_6.writePtr) && UARTCharPutNonBlocking(UART6_BASE, uartwriteBuffer_6.data[uartwriteBuffer_6.readPtr]))
+            uartwriteBuffer_6.readPtr = ringptrinc(uartwriteBuffer_6.readPtr);
+    }
+}
+
 typedef enum {
     listen,     //start character has not been received
     collect,    //start character has been received
@@ -230,6 +275,7 @@ void UARTTransferGPSData(void)
                 message[count++] = '\n';
                 message[count] = '\0';
                 UARTPrint(UART0_BASE, message);
+                UARTPrint(UART6_BASE, message);
             }
             state = listen;
             count = 0;

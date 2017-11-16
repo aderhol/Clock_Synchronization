@@ -944,4 +944,16 @@ $EndComp
 Wire Wire Line
 	3700 1200 3700 1300
 Connection ~ 3700 1300
+Text Label 8400 2900 0    60   ~ 0
+blue
+Text Label 8400 3300 0    60   ~ 0
+blue/white
+Text Label 8450 5250 0    60   ~ 0
+brown
+Text Label 8450 5450 0    60   ~ 0
+brown/white
+Text Label 8450 4750 0    60   ~ 0
+/white
+Text Label 8400 3600 0    60   ~ 0
+/white
 $EndSCHEMATC

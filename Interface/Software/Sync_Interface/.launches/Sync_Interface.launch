@@ -5,6 +5,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.Stellaris In-Circuit Debug Interface_0/CORTEX_M4_0" value="${build_artifact:Sync_Interface}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.Stellaris In-Circuit Debug Interface_0/CORTEX_M4_0" value="Sync_Interface"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:Sync_Interface}"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Stellaris In-Circuit Debug Interface_0/CORTEX_M4_0" value="D:/BME\2017-18_I\Temalabor\Clock Synchronization\Interface\Software\Sync_Interface\Debug\Sync_Interface.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/Sync_Interface"/>
 </listAttribute>
