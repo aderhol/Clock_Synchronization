@@ -7,3 +7,6 @@ jamming
 baud:
 	$PMTK251,[baud]*xx
 	$PMTK251,115200*1F
+PPS:
+	always:	$PMTK285,4,100*38
+			$PMTK285,4,500*3C

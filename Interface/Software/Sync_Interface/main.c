@@ -60,7 +60,7 @@ void init(void)
 
     UARTInit();
     i2cInit();
-    //latencyInit();
+    latencyInit();
     SysTickInit();
 
 #ifdef PULSE_ON

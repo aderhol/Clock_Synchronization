@@ -143,7 +143,7 @@ void ISR_TIMER2_B(void)
 
 void latencyInit()
 {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);    //enables GPIOA
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOM);    //enables GPIOA
     //TIMER0 is needed, because timers configured for input capture doesn't raise overflow interrupts
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);   //enables TIMER 0, which needs to enabled in order to make GPTMSYNC accessible
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2);   //enables TIMER 2
@@ -152,9 +152,9 @@ void latencyInit()
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER2));
 
     //configures timers for two-signal edge-separation
-    GPIOPinConfigure(GPIO_PA4_T2CCP0);   //sets PA4 as the input capture input for TIMER2 TIMER A
-    GPIOPinConfigure(GPIO_PA5_T2CCP1);   //sets PA5 as the input capture input for TIMER2 TIMER B
-    GPIOPinTypeTimer(GPIO_PORTA_BASE, GPIO_PIN_4 | GPIO_PIN_5); //configures the pins
+    GPIOPinConfigure(GPIO_PM0_T2CCP0);   //sets PM0 as the input capture input for TIMER2 TIMER A
+    GPIOPinConfigure(GPIO_PM1_T2CCP1);   //sets PM1 as the input capture input for TIMER2 TIMER B
+    GPIOPinTypeTimer(GPIO_PORTM_BASE, GPIO_PIN_0 | GPIO_PIN_1); //configures the pins
     TimerClockSourceSet(TIMER0_BASE, TIMER_CLOCK_SYSTEM);  //TIMER0 is clocked from the system clock
     TimerClockSourceSet(TIMER2_BASE, TIMER_CLOCK_SYSTEM);  //TIMER2 is clocked from the system clock
     TimerConfigure(TIMER0_BASE, (TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PERIODIC_UP)); //configures TIMER0
