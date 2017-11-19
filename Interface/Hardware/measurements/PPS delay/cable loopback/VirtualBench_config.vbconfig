@@ -1,0 +1,672 @@
+{
+  "Format Version": 1,
+  "Application Format Version": 16.1,
+  "Device Configuration": {
+    "Product Category": "NI-VirtualBench",
+    "Product Type": "NI VB-8012",
+    "Device Name": "VB8012-30F688F",
+    "Device Serial Number": "30F688F",
+    "Instrument Configurations": [
+      {
+        "Category": "Mixed Signal Oscilloscope",
+        "Settings": {
+          "Properties": {
+            "ScopeEnableChannel": [
+              true,
+              true
+            ],
+            "ScopeVerticalRange": [
+              5,
+              5
+            ],
+            "ScopeVerticalOffset": [
+              3,
+              2
+            ],
+            "ScopeProbeAttenuation": [
+              10,
+              10
+            ],
+            "ScopeCoupling": [
+              1,
+              1
+            ],
+            "ScopeHideChannel": [
+              false,
+              false
+            ],
+            "ScopeInputImpedance": [
+              0,
+              0
+            ],
+            "ScopeBandwidthLimit": [
+              100000000,
+              100000000
+            ],
+            "LaEnableChannel": [
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "LaThreshold": 2,
+            "LaHideChannel": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "MsoSampleRate": 500000000,
+            "MsoAcquisitionTime": 9.6E-07,
+            "MsoPretriggerTime": 4.62E-07,
+            "MsoSamplingMode": 0,
+            "MsoDigitalSampleRateControl": 1,
+            "MsoDigitalSampleRate": 1000000000,
+            "MsoBufferControl": 0,
+            "MsoBufferPretriggerPercent": 0,
+            "MsoEnableStateMode": false,
+            "MsoStateModeClockChannel": "mso/clk0",
+            "MsoStateModeClockEdge": 0,
+            "MsoDigitalBufferSize": 1048576,
+            "MsoTrigType": [
+              1,
+              0
+            ],
+            "MsoAnlgEdgeTrigHysteresis": [
+              0.390947,
+              0
+            ],
+            "MsoAnlgEdgeTrigSource": [
+              0,
+              0
+            ],
+            "MsoAnlgEdgeTrigLevel": [
+              2,
+              0
+            ],
+            "MsoAnlgEdgeTrigEdge": [
+              0,
+              0
+            ],
+            "MsoDigPatternTrigSource": "mso/d0:31,dig/0:7,mso/clk0:1,fgen/start,powerfreq,trig",
+            "MsoDigPatternTrigPattern": "0FXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "MsoDigGlitchTrigSource": "",
+            "MsoTrigDelay": 0,
+            "MsoDigEdgeTrigSource": "mso/d0",
+            "MsoDigEdgeTrigEdge": 1,
+            "MsoAutoTrigTimeoutManualControl": true,
+            "MsoAutoTrigTimeout": 12,
+            "MsoAnlgPulseWidthTrigSource": [
+              0,
+              0
+            ],
+            "MsoAnlgPulseWidthTrigPolarity": [
+              0,
+              0
+            ],
+            "MsoAnlgPulseWidthTrigLevel": [
+              2,
+              0
+            ],
+            "MsoAnlgPulseWidthTrigComparisonMode": [
+              1,
+              0
+            ],
+            "MsoAnlgPulseWidthTrigLowerLimit": [
+              0,
+              0
+            ],
+            "MsoAnlgPulseWidthTrigUpperLimit": [
+              0,
+              0
+            ],
+            "MsoDigPulseWidthTrigSource": [
+              "mso/d0",
+              ""
+            ],
+            "MsoDigPulseWidthTrigPolarity": [
+              0,
+              0
+            ],
+            "MsoDigPulseWidthTrigComparisonMode": [
+              1,
+              0
+            ],
+            "MsoDigPulseWidthTrigLowerLimit": [
+              0,
+              0
+            ],
+            "MsoDigPulseWidthTrigUpperLimit": [
+              0,
+              0
+            ]
+          },
+          "Device Version": 269533185,
+          "Model": 30454,
+          "Driver Version": 269533185
+        },
+        "Preferences": {
+          "Display": {
+            "Persistence Enabled": false,
+            "Throttling Enabled": true,
+            "Frame Rate Enabled": false,
+            "Display Mode": "Lines",
+            "Time Mode": "Normal",
+            "Digital Signal Density": "Comfy"
+          },
+          "Timing": {
+            "Time Per Division": "Plus5ns",
+            "Window Offset": 0,
+            "Window Size": 124,
+            "Acquisition Size": 964
+          },
+          "Trigger": {
+            "Trigger State": "Running",
+            "Trigger Mode": "Normal",
+            "Delay": 1.8000000000000002E-08
+          },
+          "Cursors": {
+            "Enabled": true,
+            "Type": "Track",
+            "First Source": "ch1",
+            "First Position": -9.8473658296378247E-12,
+            "Manual Cursor First Vertical Position": 1.9873901294814489,
+            "Second Source": "ch2",
+            "Second Position": 4.0000000000000007E-08,
+            "Manual Cursor Second Vertical Position": 2.0520815892614408
+          },
+          "Scope": {
+            "Acquisition": {
+              "Sample Mode": "Sample"
+            },
+            "Analog Channels": [
+              {
+                "Source": "1",
+                "Channel Name": "PPS direct"
+              },
+              {
+                "Source": "2",
+                "Channel Name": "PPS feedback"
+              }
+            ],
+            "XY Channels": [
+              {
+                "Source": "XY",
+                "X Axis Source": "ch1",
+                "Y Axis Source": "ch2"
+              }
+            ],
+            "Math Channels": [
+              {
+                "Source": "Math",
+                "Operation": "Add",
+                "Volts Per Division": "Plus5V",
+                "Enabled": false,
+                "Channel Name": "Arithmetic",
+                "First Source": "ch1",
+                "Vertical Position": 0.0,
+                "Second Source": "ch2"
+              }
+            ],
+            "Fft Channels": [
+              {
+                "Source": "FFT",
+                "Volts Per Division": "Plus20dbV",
+                "Enabled": false,
+                "Channel Name": "FFT",
+                "First Source": "ch1",
+                "Vertical Position": 0.0,
+                "FFT Window Type": "Hanning",
+                "FFT Center Frequency": 100000.0,
+                "FFT Frequency Span": 5000000.0
+              }
+            ]
+          },
+          "Logic Analyzer": {
+            "Digital Channels": [
+              {
+                "Source": "D7",
+                "Channel Name": "D7",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D6",
+                "Channel Name": "D6",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D5",
+                "Channel Name": "D5",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D4",
+                "Channel Name": "D4",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D3",
+                "Channel Name": "D3",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D2",
+                "Channel Name": "D2",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D1",
+                "Channel Name": "PPS feedback",
+                "Display Position": 1,
+                "Vertical Position": 24.0
+              },
+              {
+                "Source": "D0",
+                "Channel Name": "PPS direct",
+                "Display Position": 0,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D15",
+                "Channel Name": "D15",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D14",
+                "Channel Name": "D14",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D13",
+                "Channel Name": "D13",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D12",
+                "Channel Name": "D12",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D11",
+                "Channel Name": "D11",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D10",
+                "Channel Name": "D10",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D9",
+                "Channel Name": "D9",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D8",
+                "Channel Name": "D8",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D23",
+                "Channel Name": "D23",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D22",
+                "Channel Name": "D22",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D21",
+                "Channel Name": "D21",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D20",
+                "Channel Name": "D20",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D19",
+                "Channel Name": "D19",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D18",
+                "Channel Name": "D18",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D17",
+                "Channel Name": "D17",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D16",
+                "Channel Name": "D16",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D31",
+                "Channel Name": "D31",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D30",
+                "Channel Name": "D30",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D29",
+                "Channel Name": "D29",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D28",
+                "Channel Name": "D28",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D27",
+                "Channel Name": "D27",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D26",
+                "Channel Name": "D26",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D25",
+                "Channel Name": "D25",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "D24",
+                "Channel Name": "D24",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO7",
+                "Channel Name": "DIO7",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO6",
+                "Channel Name": "DIO6",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO5",
+                "Channel Name": "DIO5",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO4",
+                "Channel Name": "DIO4",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO3",
+                "Channel Name": "DIO3",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO2",
+                "Channel Name": "DIO2",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO1",
+                "Channel Name": "DIO1",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "DIO0",
+                "Channel Name": "DIO0",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "CLK1",
+                "Channel Name": "CLK1",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "CLK0",
+                "Channel Name": "CLK0",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "TRIG BNC",
+                "Channel Name": "TRIG BNC",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "PowerFreq",
+                "Channel Name": "PowerFreq",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              },
+              {
+                "Source": "FGEN Start",
+                "Channel Name": "FGEN Start",
+                "Display Position": 2147483647,
+                "Vertical Position": 0.0
+              }
+            ],
+            "Decoded Buses": []
+          },
+          "Measurements": [],
+          "MeasurementForIndicators": {}
+        }
+      },
+      {
+        "Category": "Function Generator",
+        "Settings": {
+          "Properties": {
+            "FGENMode": 0,
+            "FGENFrequency": 20000,
+            "FGENDutyCycle": 50,
+            "FGENStandardAmplitude": 5,
+            "FGENStandardOffset": 2.5,
+            "FGENEnableFilter": true,
+            "FGENStandardWaveform": 0,
+            "FGENArbitrarySampleRate": 100000000,
+            "FGENArbitraryWaveformSize": 1,
+            "FGENArbitraryGain": 1,
+            "FGENArbitraryOffset": 0,
+            "FGENArbitraryUserWfmGain": 0,
+            "FGENArbitraryUserWfmOffset": 0,
+            "FGENArbitraryWaveformDataID": 5
+          },
+          "Device Version": 269533185,
+          "Model": 30454,
+          "Driver Version": 269533185
+        },
+        "Preferences": {
+          "Channels": [
+            {
+              "Source": "1",
+              "VoltageMode": "AmplitudeWithOffset"
+            }
+          ]
+        }
+      },
+      {
+        "Category": "Digital Multimeter",
+        "Settings": {
+          "Properties": {
+            "DMMFunction": 6,
+            "DMMAutoRange": false,
+            "DMMManualRange": 100,
+            "DMMInputRes": 0,
+            "DMMDCCurrentAutoTerm": 1,
+            "DMMACCurrentAutoTerm": 0
+          },
+          "Device Version": 269533185,
+          "Model": 30454,
+          "Driver Version": 269533185
+        },
+        "Preferences": {}
+      },
+      {
+        "Category": "Power Supply",
+        "Settings": {
+          "Properties": {
+            "PSPos6VoltageLevel": 5,
+            "PSPos6CurrentLimit": 0.099976,
+            "PSPos6VoltageLimit": 5,
+            "PSPos6CurrentLevel": 0.099976,
+            "PSPos25VoltageLevel": 12,
+            "PSPos25CurrentLimit": 0.100006,
+            "PSPos25VoltageLimit": 12,
+            "PSPos25CurrentLevel": 0.100006,
+            "PSNeg25VoltageLevel": 0,
+            "PSNeg25CurrentLimit": 0.005005,
+            "PSNeg25VoltageLimit": 0,
+            "PSNeg25CurrentLevel": 0.005005,
+            "PSEnableTracking": false
+          },
+          "Device Version": 269533185,
+          "Model": 30454,
+          "Driver Version": 269533185
+        },
+        "Preferences": {}
+      },
+      {
+        "Category": "Digital I/O",
+        "Settings": {},
+        "Preferences": {}
+      }
+    ]
+  }
+}
