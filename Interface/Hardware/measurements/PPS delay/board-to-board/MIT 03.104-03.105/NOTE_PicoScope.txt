@@ -1,0 +1,6 @@
+On PicoScope the chanels were assigned as follows:
+	loopback:			chanel A -> PPS direct
+						chanel B -> PPS feedback
+				
+	board-to-board:		chanel A -> PPS direct on board_1(sender)
+						chanel B -> PPS direct on board_2(receiver with PPS loopback)
