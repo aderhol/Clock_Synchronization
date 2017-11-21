@@ -307,13 +307,9 @@ Wire Wire Line
 Wire Wire Line
 	4000 4050 4650 4050
 Wire Wire Line
-	7250 3850 7900 3850
+	7250 3850 8000 3850
 Wire Wire Line
-	7900 3850 8000 3850
-Wire Wire Line
-	7250 3950 7850 3950
-Wire Wire Line
-	7850 3950 8000 3950
+	7250 3950 8000 3950
 Wire Wire Line
 	7250 4450 8000 4450
 Wire Wire Line
@@ -360,9 +356,7 @@ Wire Wire Line
 	4000 3650 4650 3650
 Connection ~ 8550 3200
 Wire Wire Line
-	8550 3150 8550 3200
-Wire Wire Line
-	8550 3200 8550 3250
+	8550 3150 8550 3250
 Wire Wire Line
 	2050 1250 1900 1250
 Wire Wire Line
@@ -410,5 +404,5 @@ Wire Wire Line
 	7900 4150 7900 3850
 Connection ~ 7900 3850
 Text Notes 7900 4200 0    60   ~ 0
-this is useless\na cross cable is needed instead
+this is useless\na crossover cable is needed instead
 $EndSCHEMATC
