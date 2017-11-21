@@ -7,6 +7,7 @@
 #include "driverlib/sysctl.h" //System Control
 #include "driverlib/uart.h" //UART
 #include "driverlib/gpio.h" //GPIO
+#include "driverlib/watchdog.h"
 #include "uart_io.h"  //UART functionalities
 #include "pwm.h"
 #include "latency.h"
@@ -17,6 +18,7 @@
 #include "driverlib/fpu.h"
 #include "driverlib/pwm.h"
 #include "i2c_io.h"
+#include "pps_leds.h"
 
 //#define PULSE_ON //makes the pulse command available, disables pwm
 
@@ -30,12 +32,15 @@ void init(void);
 int main(void)
 {
     init();
-
+    if(SysCtlResetCauseGet() & SYSCTL_CAUSE_WDOG0){
+        SysCtlResetCauseClear(SYSCTL_CAUSE_WDOG0);
+        UARTPrint(UART0_BASE, "\r\n\r\n########################## WDT RESET #########################\r\n\r\n");
+    }
     UARTPrint(UART0_BASE, "Configured!\r\n\r\n");
 
     while(1)
     {
-
+        WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
     }
 }
 
@@ -51,6 +56,37 @@ void pulse(void)
 #endif
 }
 
+void wdtInit(void)
+{
+    //
+    // Enable the Watchdog 0 peripheral
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_WDOG0);
+    //
+    // Wait for the Watchdog 0 module to be ready.
+    //
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_WDOG0));
+    //
+    // Check to see if the registers are locked, and if so, unlock them.
+    //
+    if(WatchdogLockState(WATCHDOG0_BASE) == true)
+    {
+        WatchdogUnlock(WATCHDOG0_BASE);
+    }
+    //
+    // Initialize the watchdog timer.
+    //
+    WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
+    //
+    // Enable the reset.
+    //
+    WatchdogResetEnable(WATCHDOG0_BASE);
+    //
+    // Enable the watchdog timer.
+    //
+    WatchdogEnable(WATCHDOG0_BASE);
+}
+
 void init(void)
 {
     //set the System Clock Frequency to 120 MHz
@@ -58,9 +94,12 @@ void init(void)
 
     FPUEnable();
 
+    wdtInit();
+
     UARTInit();
     i2cInit();
     latencyInit();
+    PPSLEDsInit();
     SysTickInit();
 
 #ifdef PULSE_ON

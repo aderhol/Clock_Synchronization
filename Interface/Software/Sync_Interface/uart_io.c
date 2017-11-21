@@ -9,6 +9,7 @@
 #include "inc/hw_memmap.h"
 #include "inc/hw_ints.h"    //interrupt defines (eg. INT_UART0)
 #include "driverlib/sysctl.h" //System Control
+#include "command.h"
 
 #define RINGBUFFER_SIZE 256
 #define ringptrinc(X) ((X + 1) % RINGBUFFER_SIZE)
@@ -18,6 +19,8 @@ typedef struct {
     int32_t readPtr;
     uint8_t data[RINGBUFFER_SIZE];
 } ringbuffer;
+
+bool show_gps1 = true, show_line = false;
 
 static ringbuffer uartwriteBuffer_0, uartreadBuffer_0, uartwriteBuffer_4, uartreadBuffer_4, uartwriteBuffer_6, uartreadBuffer_6;
 
@@ -275,12 +278,52 @@ void UARTTransferGPSData(void)
             if(ch == '\n') { //if closing line-feed received
                 message[count++] = '\n';
                 message[count] = '\0';
-                UARTPrint(UART0_BASE, message);
-                UARTPrint(UART6_BASE, message);
+                if(show_gps1){
+                    UARTPrint(UART0_BASE, message);
+                    UARTPrint(UART6_BASE, message);
+                }
             }
             state = listen;
             count = 0;
             break;
+        }
+    }
+}
+
+void UARTTransferLineData(void)
+{
+    static uint8_t message[101];
+    static int_fast8_t count = 0;
+    static bool command = false;
+
+    while(uartHasData(UART6_BASE)) {
+        uint8_t ch = UARTGetch(UART6_BASE);
+        if(count == 0 && ch == '>')
+            command = true;
+        else{
+            message[count++] = ch;
+            if(command){
+                if(ch == '\n'){
+                    if(message[count - 2] == '\r')
+                        message[count - 2] = '\0';
+                    else
+                        message[count - 1] = '\0';
+                    execute(message, UART6_BASE);
+                    count = 0;
+                    command = false;
+                }
+                else if(count == 100){
+                    UARTPrint(UART6_BASE, "Invalid command!\r\n");
+                    count = 0;
+                    command = false;
+                }
+            }
+            else if(ch == '\n' || count == 100){
+                message[count++] = '\0';
+                if(show_line)
+                    UARTPrint(UART0_BASE, message);
+                count = 0;
+            }
         }
     }
 }

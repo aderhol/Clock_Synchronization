@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-//void measureLatency(int8_t);
+void measureLatency(bool);
 void latencyInit(void);
 
 #endif

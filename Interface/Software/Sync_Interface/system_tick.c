@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include "driverlib/systick.h"
-
-#define SYSTEM_TICK_FREQ 10 //[Hz] minimum 7. maximum SYS_CLK_FREQ_ACTUAL
+#include "system_tick.h"
 
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
 
@@ -13,8 +12,12 @@ void SysTickInit(void) {
 
 extern void CommandInterpreter(void);
 extern void UARTTransferGPSData(void);
+extern void UARTTransferLineData(void);
+extern void PPSLEDsService(void);
 
 void ISR_SysTick(void) {
     CommandInterpreter();
     UARTTransferGPSData();
+    UARTTransferLineData();
+    PPSLEDsService();
 }

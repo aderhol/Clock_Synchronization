@@ -16,6 +16,7 @@ C_SRCS += \
 ../i2c_io.c \
 ../latency.c \
 ../main.c \
+../pps_leds.c \
 ../pwm.c \
 ../system_tick.c \
 ../tm4c1294ncpdt_startup_ccs.c \
@@ -26,6 +27,7 @@ C_DEPS += \
 ./i2c_io.d \
 ./latency.d \
 ./main.d \
+./pps_leds.d \
 ./pwm.d \
 ./system_tick.d \
 ./tm4c1294ncpdt_startup_ccs.d \
@@ -36,6 +38,7 @@ OBJS += \
 ./i2c_io.obj \
 ./latency.obj \
 ./main.obj \
+./pps_leds.obj \
 ./pwm.obj \
 ./system_tick.obj \
 ./tm4c1294ncpdt_startup_ccs.obj \
@@ -46,6 +49,7 @@ OBJS__QUOTED += \
 "i2c_io.obj" \
 "latency.obj" \
 "main.obj" \
+"pps_leds.obj" \
 "pwm.obj" \
 "system_tick.obj" \
 "tm4c1294ncpdt_startup_ccs.obj" \
@@ -56,6 +60,7 @@ C_DEPS__QUOTED += \
 "i2c_io.d" \
 "latency.d" \
 "main.d" \
+"pps_leds.d" \
 "pwm.d" \
 "system_tick.d" \
 "tm4c1294ncpdt_startup_ccs.d" \
@@ -66,6 +71,7 @@ C_SRCS__QUOTED += \
 "../i2c_io.c" \
 "../latency.c" \
 "../main.c" \
+"../pps_leds.c" \
 "../pwm.c" \
 "../system_tick.c" \
 "../tm4c1294ncpdt_startup_ccs.c" \

@@ -12,6 +12,7 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_types.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/uart.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/watchdog.h
 main.obj: ../uart_io.h
 main.obj: ../pwm.h
 main.obj: ../latency.h
@@ -22,6 +23,7 @@ main.obj: ../system_tick.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/fpu.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pwm.h
 main.obj: ../i2c_io.h
+main.obj: ../pps_leds.h
 
 ../main.c: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/stdint.h: 
@@ -35,6 +37,7 @@ C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_types.h:
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/uart.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/watchdog.h: 
 ../uart_io.h: 
 ../pwm.h: 
 ../latency.h: 
@@ -45,3 +48,4 @@ C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/interrupt.h:
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/fpu.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pwm.h: 
 ../i2c_io.h: 
+../pps_leds.h: 

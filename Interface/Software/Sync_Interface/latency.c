@@ -12,6 +12,7 @@
 #include "driverlib/sysctl.h" //System Control
 #include "uart_io.h"
 #include "i2c_io.h"
+#include "pps_leds.h"
 
 extern void InterruptConfigFaultISR(const uint8_t*);
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
@@ -21,12 +22,12 @@ static char stringBuilder[101];
 #define INPUT_CAPTURE_TIMER_WIDTH 16777216 //24 bit wide -> 2^24 = 16,777,216
 #define INPUT_CAPTURE_CLOCK_FREQUENCY SYS_CLK_FREQ_ACTUAL
 static int32_t offset = 0, timestamp = -1;
-static int8_t measuring = 0;
+static bool measuring = true;
 
-/*void measureLatency(int8_t c)
+void measureLatency(bool cmnd)
 {
-    measuring += c;
-}*/
+    measuring = cmnd;
+}
 
 //overflow
 void ISR_TIMER0_A(void)
@@ -66,14 +67,15 @@ void ISR_TIMER2_A(void)
     if(callers & TIMER_CAPA_EVENT){  //expected interrupt?
         //UARTPrint(UART0_BASE, "\r\n----------\r\n");
         //if new edge was captured
-        //if(measuring)
-        if(timestamp == -1)
-            timestamp = TimerValueGet(TIMER2_BASE, TIMER_A);
-        else {
-            timestamp = -1;
-            offset = 0;
-            UARTPrint(UART0_BASE, "\r\n> ERROR: missed edge on B\r\n\r\n");
-        }
+        if(measuring)
+            if(timestamp == -1)
+                timestamp = TimerValueGet(TIMER2_BASE, TIMER_A);
+            else {
+                timestamp = -1;
+                offset = 0;
+                UARTPrint(UART0_BASE, "\r\n> ERROR: missed edge on B\r\n\r\n");
+            }
+        PPSDirectkReceived();
     }
     else {
         sprintf(stringBuilder, "TIMER A unexpected interrupt: 0x%X", callers);
@@ -92,105 +94,106 @@ void ISR_TIMER2_B(void)
     TimerIntClear(TIMER2_BASE, callers);    //clears the interrupt flags
 
     if(callers & TIMER_CAPB_EVENT){  //expected interrupt?
-        //if(measuring)
-        if(timestamp == -1) {
-            timestamp = -1;
-            offset = 0;
-            UARTPrint(UART0_BASE, "\r\n> ERROR: missed edge on A\r\n\r\n");
-        }
-        else {
-            uint32_t timestampB = TimerValueGet(TIMER2_BASE, TIMER_B); //saves timestamp
-            if(timestampB + offset > timestamp) {   //checks if B has been captured after A
-                uint8_t cheksum = 0x4F, out[53] = {/*'\r', '\n', '>', '>', '>', */'$', 'G', 'P', 'I', 'N', 'F', ',', 'D', 'E', 'L', 'A', 'Y', '='};
-                uint_fast8_t outCount = 13/*18*/, ch;
-                double num = ((double)(offset + timestampB - timestamp)) * (1000000000.0 / INPUT_CAPTURE_CLOCK_FREQUENCY);
-
-
-                uint32_t wholePart = (uint32_t)num;
-                uint8_t fractionPart = ((num - wholePart) * 100) + 0.5;
-                wholePart += fractionPart / 100;
-                uint8_t digits[11];
-                int_fast8_t count = 0;
-                do {
-                    digits[count++] = '0' + (wholePart % 10);
-                    wholePart /= 10;
-                }while(wholePart);
-                for(count--; count >= 0; count--) {
-                    out[outCount++] = digits[count];
-                    cheksum ^= digits[count];
-                }
-                out[outCount++] = '.';
-                ch = '0' + ((fractionPart / 10) % 10);
-                out[outCount++] = ch;
-                cheksum ^= ch;
-                ch = '0' + (fractionPart % 10);
-                out[outCount++] = ch;
-                cheksum ^= ch;
-                out[outCount++] = ',';
-
-
-                out[outCount++] = 'T';
-                out[outCount++] = 'E';
-                out[outCount++] = 'M';
-                out[outCount++] = 'P';
-                out[outCount++] = 'E';
-                out[outCount++] = 'R';
-                out[outCount++] = 'A';
-                out[outCount++] = 'T';
-                out[outCount++] = 'U';
-                out[outCount++] = 'R';
-                out[outCount++] = 'E';
-                out[outCount++] = '=';
-                num = temperature();
-                wholePart = (uint32_t)num;
-                fractionPart = ((num - wholePart) * 10000) + 0.5;
-                wholePart += fractionPart / 10000;
-                count = 0;
-                do {
-                    digits[count++] = '0' + (wholePart % 10);
-                    wholePart /= 10;
-                }while(wholePart);
-                for(count--; count >= 0; count--) {
-                    out[outCount++] = digits[count];
-                    cheksum ^= digits[count];
-                }
-
-                out[outCount++] = '.';
-                ch = '0' + ((fractionPart / 1000) % 10);
-                out[outCount++] = ch;
-                cheksum ^= ch;
-                ch = '0' + ((fractionPart / 100) % 10);
-                out[outCount++] = ch;
-                cheksum ^= ch;
-                ch = '0' + ((fractionPart / 10) % 10);
-                out[outCount++] = ch;
-                cheksum ^= ch;
-                ch = '0' + (fractionPart % 10);
-                out[outCount++] = ch;
-                cheksum ^= ch;
-
-                out[outCount++] = '*';
-                out[outCount++] = (((cheksum / 16) % 16) <= 9) ? ('0' + ((cheksum / 16) % 16)) : ('A' + (((cheksum / 16) % 16) - 10));
-                out[outCount++] = ((cheksum % 16) <= 9) ? ('0' + (cheksum % 16)) : ('A' + ((cheksum % 16) - 10));
-                out[outCount++] = '\r';
-                out[outCount++] = '\n';
-                /*out[outCount++] = '\r';
-                out[outCount++] = '\n';*/
-                out[outCount] = '\0';
-                UARTPrint(UART0_BASE, out);             //USB
-                UARTPrint(UART6_BASE, out);             //line
-
+        if(measuring)
+            if(timestamp == -1) {
                 timestamp = -1;
                 offset = 0;
-                //measuring--;
+                UARTPrint(UART0_BASE, "\r\n> ERROR: missed edge on A\r\n\r\n");
             }
             else {
-                timestamp = -1;
-                offset = 0;
-                UARTPrint(UART0_BASE, "\r\n> ERROR: B predates A\r\n\r\n");
-                TimerIntClear(TIMER2_BASE, TIMER_CAPA_EVENT & TIMER_CAPB_EVENT);
+                uint32_t timestampB = TimerValueGet(TIMER2_BASE, TIMER_B); //saves timestamp
+                if(timestampB + offset > timestamp) {   //checks if B has been captured after A
+                    uint8_t cheksum = 0x4F, out[53] = {/*'\r', '\n', '>', '>', '>', */'$', 'G', 'P', 'I', 'N', 'F', ',', 'D', 'E', 'L', 'A', 'Y', '='};
+                    uint_fast8_t outCount = 13/*18*/, ch;
+                    double num = ((double)(offset + timestampB - timestamp)) * (1000000000.0 / INPUT_CAPTURE_CLOCK_FREQUENCY);
+
+
+                    uint32_t wholePart = (uint32_t)num;
+                    uint8_t fractionPart = ((num - wholePart) * 100) + 0.5;
+                    wholePart += fractionPart / 100;
+                    uint8_t digits[11];
+                    int_fast8_t count = 0;
+                    do {
+                        digits[count++] = '0' + (wholePart % 10);
+                        wholePart /= 10;
+                    }while(wholePart);
+                    for(count--; count >= 0; count--) {
+                        out[outCount++] = digits[count];
+                        cheksum ^= digits[count];
+                    }
+                    out[outCount++] = '.';
+                    ch = '0' + ((fractionPart / 10) % 10);
+                    out[outCount++] = ch;
+                    cheksum ^= ch;
+                    ch = '0' + (fractionPart % 10);
+                    out[outCount++] = ch;
+                    cheksum ^= ch;
+                    out[outCount++] = ',';
+
+
+                    out[outCount++] = 'T';
+                    out[outCount++] = 'E';
+                    out[outCount++] = 'M';
+                    out[outCount++] = 'P';
+                    out[outCount++] = 'E';
+                    out[outCount++] = 'R';
+                    out[outCount++] = 'A';
+                    out[outCount++] = 'T';
+                    out[outCount++] = 'U';
+                    out[outCount++] = 'R';
+                    out[outCount++] = 'E';
+                    out[outCount++] = '=';
+                    num = temperature();
+                    wholePart = (uint32_t)num;
+                    fractionPart = ((num - wholePart) * 10000) + 0.5;
+                    wholePart += fractionPart / 10000;
+                    count = 0;
+                    do {
+                        digits[count++] = '0' + (wholePart % 10);
+                        wholePart /= 10;
+                    }while(wholePart);
+                    for(count--; count >= 0; count--) {
+                        out[outCount++] = digits[count];
+                        cheksum ^= digits[count];
+                    }
+
+                    out[outCount++] = '.';
+                    ch = '0' + ((fractionPart / 1000) % 10);
+                    out[outCount++] = ch;
+                    cheksum ^= ch;
+                    ch = '0' + ((fractionPart / 100) % 10);
+                    out[outCount++] = ch;
+                    cheksum ^= ch;
+                    ch = '0' + ((fractionPart / 10) % 10);
+                    out[outCount++] = ch;
+                    cheksum ^= ch;
+                    ch = '0' + (fractionPart % 10);
+                    out[outCount++] = ch;
+                    cheksum ^= ch;
+
+                    out[outCount++] = '*';
+                    out[outCount++] = (((cheksum / 16) % 16) <= 9) ? ('0' + ((cheksum / 16) % 16)) : ('A' + (((cheksum / 16) % 16) - 10));
+                    out[outCount++] = ((cheksum % 16) <= 9) ? ('0' + (cheksum % 16)) : ('A' + ((cheksum % 16) - 10));
+                    out[outCount++] = '\r';
+                    out[outCount++] = '\n';
+                    /*out[outCount++] = '\r';
+                    out[outCount++] = '\n';*/
+                    out[outCount] = '\0';
+                    UARTPrint(UART0_BASE, out);             //USB
+                    UARTPrint(UART6_BASE, out);             //line
+
+                    timestamp = -1;
+                    offset = 0;
+                    //measuring--;
+                }
+                else {
+                    timestamp = -1;
+                    offset = 0;
+                    UARTPrint(UART0_BASE, "\r\n> ERROR: B predates A\r\n\r\n");
+                    TimerIntClear(TIMER2_BASE, TIMER_CAPA_EVENT & TIMER_CAPB_EVENT);
+                }
             }
-        }
+        PPSFeedbackReceived();
     }
     else {
         sprintf(stringBuilder, "TIMER B unexpected interrupt 1: callers->0x%X", callers);
