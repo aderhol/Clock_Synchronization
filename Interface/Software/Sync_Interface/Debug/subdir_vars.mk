@@ -13,6 +13,7 @@ C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/ccs/Debug/driverlib.lib
 
 C_SRCS += \
 ../command.c \
+../gps1.c \
 ../i2c_io.c \
 ../latency.c \
 ../main.c \
@@ -24,6 +25,7 @@ C_SRCS += \
 
 C_DEPS += \
 ./command.d \
+./gps1.d \
 ./i2c_io.d \
 ./latency.d \
 ./main.d \
@@ -35,6 +37,7 @@ C_DEPS += \
 
 OBJS += \
 ./command.obj \
+./gps1.obj \
 ./i2c_io.obj \
 ./latency.obj \
 ./main.obj \
@@ -46,6 +49,7 @@ OBJS += \
 
 OBJS__QUOTED += \
 "command.obj" \
+"gps1.obj" \
 "i2c_io.obj" \
 "latency.obj" \
 "main.obj" \
@@ -57,6 +61,7 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "command.d" \
+"gps1.d" \
 "i2c_io.d" \
 "latency.d" \
 "main.d" \
@@ -68,6 +73,7 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../command.c" \
+"../gps1.c" \
 "../i2c_io.c" \
 "../latency.c" \
 "../main.c" \

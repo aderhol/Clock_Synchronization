@@ -136,6 +136,10 @@ void UARTInit(void)
     uartreadBuffer_6.readPtr = 0;
     uartwriteBuffer_6.writePtr = 0;
     uartwriteBuffer_6.readPtr = 0;
+
+   UARTPrint(UART4_BASE, "$PMTK251,115200*1F\r\n");
+   UARTConfigSetExpClk(UART4_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+   UARTPrint(UART4_BASE, "$PMTK256,1*2E\r\n");
 }
 
 void UARTPutch(uint32_t base, uint8_t ch) {
