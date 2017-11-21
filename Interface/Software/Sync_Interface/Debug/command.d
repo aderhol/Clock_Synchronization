@@ -15,9 +15,7 @@ command.obj: ../uart_io.h
 command.obj: C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h
 command.obj: ../latency.h
 command.obj: ../pwm.h
-command.obj: ../gps1.h
 command.obj: ../i2c_io.h
-command.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h
 
 ../command.c: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/stdint.h: 
@@ -34,6 +32,4 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/_isfuncdcl.h:
 C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h: 
 ../latency.h: 
 ../pwm.h: 
-../gps1.h: 
 ../i2c_io.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h: 

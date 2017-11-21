@@ -10,5 +10,3 @@ baud:
 PPS:
 	always:	$PMTK285,4,100*38
 			$PMTK285,4,500*3C
-timing product:
-	on:		$PMTK256,1*2E

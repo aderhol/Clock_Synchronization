@@ -14,12 +14,10 @@ extern void CommandInterpreter(void);
 extern void UARTTransferGPSData(void);
 extern void UARTTransferLineData(void);
 extern void PPSLEDsService(void);
-extern void GPS1Service(void);
 
 void ISR_SysTick(void) {
     CommandInterpreter();
     UARTTransferGPSData();
     UARTTransferLineData();
     PPSLEDsService();
-    GPS1Service();
 }

@@ -100,7 +100,6 @@ void init(void)
     i2cInit();
     latencyInit();
     PPSLEDsInit();
-    GPS1Init();
     SysTickInit();
 
 #ifdef PULSE_ON
