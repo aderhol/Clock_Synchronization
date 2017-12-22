@@ -11,7 +11,7 @@
 #include "driverlib/sysctl.h" //System Control
 #include "command.h"
 
-#define RINGBUFFER_SIZE 256
+#define RINGBUFFER_SIZE 1024
 #define ringptrinc(X) ((X + 1) % RINGBUFFER_SIZE)
 
 typedef struct {

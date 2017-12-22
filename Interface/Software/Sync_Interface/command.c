@@ -17,7 +17,7 @@ extern void InterruptConfigFaultISR(const uint8_t*);
 #define COMMAND_BUFFER_SIZE 10
 
 const static char* commands[] = {"forward", "help", "mode"/*, "measure"*/, "pulse", "pwm","sitrep", "temp", "view"};
-const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", "mode [gps/loopback]"/*, " measure {number of measurements to be performed (1-127)}"*/, " pulse", " PWM set [PWM-clock-ticks (period)] [PWM-clock-ticks (pulse-width)]\r\n         period [PWM-clock-ticks]\r\n         pulse-width [PWM-clock-ticks]\r\n     get"," sitrep", "temp", "view [on/off] [device]"};
+const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", " mode [gps/loopback]"/*, " measure {number of measurements to be performed (1-127)}"*/, " pulse", " PWM set [PWM-clock-ticks (period)] [PWM-clock-ticks (pulse-width)]\r\n         period [PWM-clock-ticks]\r\n         pulse-width [PWM-clock-ticks]\r\n     get"," sitrep", " temp", " view [on/off] [device]"};
 enum {FORWARD, HELP, MODE/*, MEASURE*/, PULSE, PWM,SITREP, TEMP, VIEW};
 
 static void getCommands(uint32_t);
@@ -165,7 +165,7 @@ void execute(uint8_t* command_in, uint32_t base) {
                 case FORWARD:
                     if(count > 3 && (strcmp(tokens[1], "to") == 0)){
                         if(strcmp(tokens[2], "line") == 0){
-                            UARTPrint(UART6_BASE, command_in + 16);
+                            UARTPrint(UART6_BASE, command_in + 16); //+16, so that the front gets cut off
                             UARTPrint(UART6_BASE, "\r\n");
                         }
                         else{

@@ -9,7 +9,7 @@ CMD_SRCS += \
 ../tm4c1294ncpdt.cmd 
 
 LIB_SRCS += \
-C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/ccs/Debug/driverlib.lib 
+C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/ccs/Debug/driverlib.lib 
 
 C_SRCS += \
 ../command.c \
