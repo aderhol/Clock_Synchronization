@@ -1,0 +1,3 @@
+PPS direct: outgoing PPS from the module
+PPS received: incoming PPS on the other module
+PPS feedback: incoming PPS from the other module on the module which generates the PPS
