@@ -13,6 +13,7 @@
 
 extern void pulse(void);
 extern void InterruptConfigFaultISR(const uint8_t*);
+extern uint32_t GPS_base;
 
 #define COMMAND_BUFFER_SIZE 10
 
@@ -105,8 +106,8 @@ void CommandInterpreter(void)
 void execute(uint8_t* command_in, uint32_t base) {
 
     if( command_in[0] == '$') {  //if NMEA message
-        UARTPrint(UART4_BASE, command_in);
-        UARTPrint(UART4_BASE, "\r\n");
+        UARTPrint(GPS_base, command_in);
+        UARTPrint(GPS_base, "\r\n");
         return;
     }
 
@@ -148,8 +149,13 @@ void execute(uint8_t* command_in, uint32_t base) {
                 switch(cmd) {
                 case MODE:
                     if(count == 2){
-                        if(strcmp(tokens[1], "gps") == 0){
+                        if(strcmp(tokens[1], "gps1") == 0){
                             measureLatency(true);
+                            GPS_base = UART4_BASE;
+                        }
+                        else if(strcmp(tokens[1], "gps2") == 0){
+                            measureLatency(true);
+                            GPS_base = UART3_BASE;
                         }
                         else if(strcmp(tokens[1], "loopback") == 0){
                             measureLatency(false);
@@ -190,8 +196,8 @@ void execute(uint8_t* command_in, uint32_t base) {
                             UARTPrint(base, "\r\n Syntax error!\r\n Usage: view [on/off] [device]\r\n");
                             break;
                         }
-                        if(strcmp(tokens[2], "gps1") == 0){
-                            show_gps1 = comnd;
+                        if(strcmp(tokens[2], "gps") == 0){
+                            show_gps = comnd;
                         }
                         else if(strcmp(tokens[2], "line") == 0){
                             show_line = comnd;

@@ -40,7 +40,7 @@ int main(void)
 
     while(1)
     {
-        WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
+        //WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
     }
 }
 
@@ -94,7 +94,7 @@ void init(void)
 
     FPUEnable();
 
-    wdtInit();
+   // wdtInit();
 
     UARTInit();
     i2cInit();

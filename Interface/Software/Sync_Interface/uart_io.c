@@ -20,9 +20,10 @@ typedef struct {
     uint8_t data[RINGBUFFER_SIZE];
 } ringbuffer;
 
-bool show_gps1 = true, show_line = false;
+bool show_gps = true, show_line = false;
+uint32_t GPS_base = UART4_BASE;
 
-static ringbuffer uartwriteBuffer_0, uartreadBuffer_0, uartwriteBuffer_4, uartreadBuffer_4, uartwriteBuffer_6, uartreadBuffer_6;
+static ringbuffer uartwriteBuffer_0, uartreadBuffer_0,  uartwriteBuffer_3, uartreadBuffer_3, uartwriteBuffer_4, uartreadBuffer_4, uartwriteBuffer_6, uartreadBuffer_6;
 
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
 
@@ -34,6 +35,12 @@ static inline ringbuffer* baseToBuffer(uint32_t base, bool write)
             return &uartwriteBuffer_0;
         else
             return &uartreadBuffer_0;
+        break;
+    case UART3_BASE:
+        if(write)
+            return &uartwriteBuffer_3;
+        else
+            return &uartreadBuffer_3;
         break;
     case UART4_BASE:
         if(write)
@@ -78,47 +85,56 @@ void UARTInit(void)
 {//4-es, R> k0, T> k1
 
     //enable UART pins
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);        //USB
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);        //USB & GPS_2
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOK);        //GPS_1
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOP);        //line
 
     //enables UART
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART4);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART6);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);        //USB
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART3);        //GPS_2
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART4);        //GPS_1
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART6);        //line
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_UART6)); //wait for UART to be ready
 
     //sets pins as UART pins
     GPIOPinConfigure(GPIO_PA0_U0RX);
     GPIOPinConfigure(GPIO_PA1_U0TX);
+    GPIOPinConfigure(GPIO_PA4_U3RX);
+    GPIOPinConfigure(GPIO_PA5_U3TX);
     GPIOPinConfigure(GPIO_PK0_U4RX);
     GPIOPinConfigure(GPIO_PK1_U4TX);
     GPIOPinConfigure(GPIO_PP0_U6RX);
     GPIOPinConfigure(GPIO_PP1_U6TX);
 
     //configures UART pins (input/output)
-    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5); //USB & GPS_2
     GPIOPinTypeUART(GPIO_PORTK_BASE, GPIO_PIN_0 | GPIO_PIN_1);
     GPIOPinTypeUART(GPIO_PORTP_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
     //configure the UART modules
     //UART0(USB):   baud-rate: 115200,  8-bit, 1 STOP-bit, no parity-bit
+    //UART3(GPS_2): baud-rate: 115200,    8-bit, 1 STOP-bit, no parity-bit
     //UART4(GPS_1): baud-rate: 9600,    8-bit, 1 STOP-bit, no parity-bit
     //UART6(line):  baud-rate: 115200,  8-bit, 1 STOP-bit, no parity-bit
     //AND enables UART
     UARTConfigSetExpClk(UART0_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+    UARTConfigSetExpClk(UART3_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
     UARTConfigSetExpClk(UART4_BASE, SYS_CLK_FREQ_ACTUAL, 9600, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
     UARTConfigSetExpClk(UART6_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
     UARTFIFOEnable(UART0_BASE); //enables FIFOs
+    UARTFIFOEnable(UART3_BASE); //enables FIFOs
     UARTFIFOEnable(UART4_BASE); //enables FIFOs
     UARTFIFOEnable(UART6_BASE); //enables FIFOs
     UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
+    UARTFIFOLevelSet(UART3_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
     UARTFIFOLevelSet(UART4_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
     UARTFIFOLevelSet(UART6_BASE, UART_FIFO_TX2_8, UART_FIFO_RX4_8);
     UARTIntEnable(UART0_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX)); //unmasks Receive Timeout and receive FIFO interrupts
+    UARTIntEnable(UART3_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX)); //unmasks Receive Timeout and receive FIFO interrupts
     UARTIntEnable(UART4_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX));
     UARTIntEnable(UART6_BASE, (UART_INT_RT | UART_INT_TX | UART_INT_RX)); //unmasks Receive Timeout and receive FIFO interrupts
     IntEnable(INT_UART0);   //enables unmasked UART interrupts
+    IntEnable(INT_UART3);
     IntEnable(INT_UART4);
     IntEnable(INT_UART6);
 
@@ -126,6 +142,11 @@ void UARTInit(void)
     uartreadBuffer_0.readPtr = 0;
     uartwriteBuffer_0.writePtr = 0;
     uartwriteBuffer_0.readPtr = 0;
+
+    uartreadBuffer_3.writePtr = 0;
+    uartreadBuffer_3.readPtr = 0;
+    uartwriteBuffer_3.writePtr = 0;
+    uartwriteBuffer_3.readPtr = 0;
 
     uartreadBuffer_4.writePtr = 0;
     uartreadBuffer_4.readPtr = 0;
@@ -189,6 +210,31 @@ void ISR_UART0(void)
     }
 }
 
+//GPS_2
+void ISR_UART3(void)
+{
+    uint32_t callers = UARTIntStatus(UART3_BASE, true);  //determines what triggered the interrupt
+    UARTIntClear(UART3_BASE, callers);  //clears the interrupt flags
+
+    if(callers & (UART_INT_RT | UART_INT_RX)){
+        while(UARTCharsAvail(UART3_BASE)){
+            //UARTPutch(UART0_BASE, UARTCharGetNonBlocking(UART4_BASE));
+            if(ringptrinc(uartreadBuffer_3.writePtr) != uartreadBuffer_3.readPtr) { //if the buffer is not full
+                uartreadBuffer_3.data[uartreadBuffer_3.writePtr] = UARTCharGetNonBlocking(UART3_BASE);
+                uartreadBuffer_3.writePtr = ringptrinc(uartreadBuffer_3.writePtr);
+            }
+            else
+                UARTCharGetNonBlocking(UART3_BASE);
+        }
+    }
+
+    if(callers & UART_INT_TX) {
+        while((uartwriteBuffer_3.readPtr != uartwriteBuffer_3.writePtr) && UARTCharPutNonBlocking(UART3_BASE, uartwriteBuffer_3.data[uartwriteBuffer_3.readPtr]))
+            uartwriteBuffer_3.readPtr = ringptrinc(uartwriteBuffer_3.readPtr);
+    }
+}
+
+//GPS_1
 void ISR_UART4(void)
 {
     uint32_t callers = UARTIntStatus(UART4_BASE, true);  //determines what triggered the interrupt
@@ -246,9 +292,16 @@ void UARTTransferGPSData(void)
     static uint8_t message[83];
     static int_fast8_t count = 0;
     static GPS_NMEA_MessageState state = listen;
+    static uint32_t base;
 
-    while(uartHasData(UART4_BASE)) {
-        uint8_t ch = UARTGetch(UART4_BASE);
+    if(GPS_base != base){
+        state = listen;
+        count = 0;
+    }
+    base = GPS_base;
+
+    while(uartHasData(base)) {
+        uint8_t ch = UARTGetch(base);
         switch(state) {
         case listen:
             if(ch == '!' || ch == '$') {
@@ -278,7 +331,7 @@ void UARTTransferGPSData(void)
             if(ch == '\n') { //if closing line-feed received
                 message[count++] = '\n';
                 message[count] = '\0';
-                if(show_gps1){
+                if(show_gps){
                     UARTPrint(UART0_BASE, message);
                     UARTPrint(UART6_BASE, message);
                 }
