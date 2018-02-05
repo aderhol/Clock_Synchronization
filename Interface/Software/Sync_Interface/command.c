@@ -17,9 +17,9 @@ extern uint32_t GPS_base;
 
 #define COMMAND_BUFFER_SIZE 10
 
-const static char* commands[] = {"forward", "help", "mode"/*, "measure"*/, "pulse", "pwm","sitrep", "temp", "view"};
-const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", " mode [gps/loopback]"/*, " measure {number of measurements to be performed (1-127)}"*/, " pulse", " PWM set [PWM-clock-ticks (period)] [PWM-clock-ticks (pulse-width)]\r\n         period [PWM-clock-ticks]\r\n         pulse-width [PWM-clock-ticks]\r\n     get"," sitrep", " temp", " view [on/off] [device]"};
-enum {FORWARD, HELP, MODE/*, MEASURE*/, PULSE, PWM,SITREP, TEMP, VIEW};
+const static char* commands[] = {"forward", "help", "mode"/*, "measure"*/, "pulse", "pwm", "reset","sitrep", "temp", "view"};
+const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", " mode [gps/loopback]"/*, " measure {number of measurements to be performed (1-127)}"*/, " pulse", " PWM set [PWM-clock-ticks (period)] [PWM-clock-ticks (pulse-width)]\r\n         period [PWM-clock-ticks]\r\n         pulse-width [PWM-clock-ticks]\r\n     get", " reset averages\r\n", " sitrep", " temp", " view [on/off] [device]"};
+enum {FORWARD, HELP, MODE/*, MEASURE*/, PULSE, PWM, RESET, SITREP, TEMP, VIEW};
 
 static void getCommands(uint32_t);
 static uint8_t* FetchCommand(void);
@@ -147,6 +147,19 @@ void execute(uint8_t* command_in, uint32_t base) {
 
             if(cmd != -1) {
                 switch(cmd) {
+                case RESET:
+                    if(count == 2){
+                        if(strcmp(tokens[1], "averages") == 0){
+                            resetAverages();
+                        }
+                        else{
+                            UARTPrint(base, "\r\n Syntax error!\r\n Usage: reset averages\r\n");
+                            break;
+                        }
+                    }
+                    else
+                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: reset averages\r\n");
+                    break;
                 case MODE:
                     if(count == 2){
                         if(strcmp(tokens[1], "gps1") == 0){

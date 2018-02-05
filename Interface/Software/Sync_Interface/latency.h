@@ -5,5 +5,6 @@
 
 void measureLatency(bool);
 void latencyInit(void);
+void resetAverages(void);
 
 #endif

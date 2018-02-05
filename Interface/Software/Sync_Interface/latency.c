@@ -19,10 +19,21 @@ extern uint32_t SYS_CLK_FREQ_ACTUAL;
 
 static char stringBuilder[101];
 
+typedef struct{
+    double avrg90;
+    double avrg500;
+    double avrg1000;
+    double data[1001];
+    int_fast16_t oldest;
+    int_fast16_t write;
+    int_fast16_t count;
+}RollingAverage;
+
 #define INPUT_CAPTURE_TIMER_WIDTH 16777216 //24 bit wide -> 2^24 = 16,777,216
 #define INPUT_CAPTURE_CLOCK_FREQUENCY SYS_CLK_FREQ_ACTUAL
 static int32_t offset = 0, timestamp = -1;
 static bool measuring = true;
+static RollingAverage rollingAverage = {0, 0, 0, {}, 0, 0, 0};
 
 void measureLatency(bool cmnd)
 {
@@ -103,10 +114,75 @@ void ISR_TIMER2_B(void)
             else {
                 uint32_t timestampB = TimerValueGet(TIMER2_BASE, TIMER_B); //saves timestamp
                 if(timestampB + offset > timestamp) {   //checks if B has been captured after A
-                    uint8_t cheksum = 0x4F, out[53] = {/*'\r', '\n', '>', '>', '>', */'$', 'G', 'P', 'I', 'N', 'F', ',', 'D', 'E', 'L', 'A', 'Y', '='};
+                    uint8_t cheksum = 0x25/*0x4F*/, out[100] = {/*'\r', '\n', '>', '>', '>', */'$', 'G', 'P', 'I', 'N', 'F', ',', 'D', 'E', 'L', 'A', 'Y', '='};
                     uint_fast8_t outCount = 13/*18*/, ch;
                     double num = ((double)(offset + timestampB - timestamp)) * (1000000000.0 / INPUT_CAPTURE_CLOCK_FREQUENCY);
 
+                    //<rolling average>
+                    if(num > 0 && num < 1000000) {      //if the measured date is plausible (aka not a glitch)
+                        rollingAverage.data[rollingAverage.write] = num;
+                        rollingAverage.write = (rollingAverage.write + 1) % 1001;
+                        rollingAverage.count++;
+                    }
+                    if(rollingAverage.count == 1001) {
+                        rollingAverage.oldest = (rollingAverage.oldest + 1) % 1001;
+                        rollingAverage.count--;
+                    }
+                    if(rollingAverage.count >= 1000) {
+                        double sum = 0, c = 0;
+                        int_fast16_t index = rollingAverage.oldest;
+                        while(index != rollingAverage.write) {
+                            double y = rollingAverage.data[index] - c;
+                            double preSum = sum + y;
+                            c = preSum - sum - y;
+                            sum = preSum;
+                            index = (index + 1) % 1001;
+                        }
+                        rollingAverage.avrg1000 = sum / 1000;
+                    }
+                    if(rollingAverage.count >= 90) {
+                        double sum = 0, c = 0;
+                        int_fast16_t index = (1001 + rollingAverage.write - 90) % 1001;
+                        while(index != rollingAverage.write) {
+                            double y = rollingAverage.data[index] - c;
+                            double preSum = sum + y;
+                            c = preSum - sum - y;
+                            sum = preSum;
+                            index = (index + 1) % 1001;
+                        }
+                        rollingAverage.avrg90 = sum / 90;
+                    }
+                    if(rollingAverage.count >= 500) {
+                        double sum = 0, c = 0;
+                        int_fast16_t index = (1001 + rollingAverage.write - 500) % 1001;
+                        while(index != rollingAverage.write) {
+                            double y = rollingAverage.data[index] - c;
+                            double preSum = sum + y;
+                            c = preSum - sum - y;
+                            sum = preSum;
+                            index = (index + 1) % 1001;
+                        }
+                        rollingAverage.avrg500 = sum / 500;
+                    }
+
+                    /*rollingAverage.data[rollingAverage.write] = num;
+                    rollingAverage.write = (rollingAverage.write + 1) % 1001;
+                    rollingAverage.count++;
+                    if(rollingAverage.count == 1001) {
+                        rollingAverage.avrg1000 -= rollingAverage.data[rollingAverage.oldest] / 1000;
+                        rollingAverage.oldest = (rollingAverage.oldest + 1) % 1001;
+                        rollingAverage.count--;
+                    }
+                    if(rollingAverage.count > 90) {
+                        rollingAverage.avrg90 -= rollingAverage.data[(1001 + rollingAverage.write - (90 + 1)) % 1001] / 90;
+                    }
+                    if(rollingAverage.count > 500) {
+                        rollingAverage.avrg500 -= rollingAverage.data[(1001 + rollingAverage.write - (500 + 1)) % 1001] / 500;
+                    }
+                    rollingAverage.avrg90 += num / 90;
+                    rollingAverage.avrg500 += num / 500;
+                    rollingAverage.avrg1000 += num / 1000;*/
+                    //</rolling average>
 
                     uint32_t wholePart = (uint32_t)num;
                     uint8_t fractionPart = ((num - wholePart) * 100) + 0.5;
@@ -128,6 +204,114 @@ void ISR_TIMER2_B(void)
                     ch = '0' + (fractionPart % 10);
                     out[outCount++] = ch;
                     cheksum ^= ch;
+                    out[outCount++] = ',';
+
+
+                    out[outCount++] = 'A';
+                    out[outCount++] = '9';
+                    out[outCount++] = '0';
+                    out[outCount++] = '=';
+                    if(rollingAverage.count >= 90) {
+                        num = rollingAverage.avrg90;
+                        wholePart = (uint32_t)num;
+                        fractionPart = ((num - wholePart) * 100) + 0.5;
+                        wholePart += fractionPart / 100;
+                        count = 0;
+                        do {
+                            digits[count++] = '0' + (wholePart % 10);
+                            wholePart /= 10;
+                        }while(wholePart);
+                        for(count--; count >= 0; count--) {
+                            out[outCount++] = digits[count];
+                            cheksum ^= digits[count];
+                        }
+
+                        out[outCount++] = '.';
+                        cheksum ^= '.';
+                        ch = '0' + ((fractionPart / 10) % 10);
+                        out[outCount++] = ch;
+                        cheksum ^= ch;
+                        ch = '0' + (fractionPart % 10);
+                        out[outCount++] = ch;
+                        cheksum ^= ch;
+                    }
+                    else {
+                        out[outCount++] = '-';
+                        cheksum ^= '-';
+                    }
+                    out[outCount++] = ',';
+
+
+                    out[outCount++] = 'A';
+                    out[outCount++] = '5';
+                    out[outCount++] = '0';
+                    out[outCount++] = '0';
+                    out[outCount++] = '=';
+                    if(rollingAverage.count >= 500) {
+                        num = rollingAverage.avrg500;
+                        wholePart = (uint32_t)num;
+                        fractionPart = ((num - wholePart) * 100) + 0.5;
+                        wholePart += fractionPart / 100;
+                        count = 0;
+                        do {
+                            digits[count++] = '0' + (wholePart % 10);
+                            wholePart /= 10;
+                        }while(wholePart);
+                        for(count--; count >= 0; count--) {
+                            out[outCount++] = digits[count];
+                            cheksum ^= digits[count];
+                        }
+
+                        out[outCount++] = '.';
+                        cheksum ^= '.';
+                        ch = '0' + ((fractionPart / 10) % 10);
+                        out[outCount++] = ch;
+                        cheksum ^= ch;
+                        ch = '0' + (fractionPart % 10);
+                        out[outCount++] = ch;
+                        cheksum ^= ch;
+                    }
+                    else {
+                        out[outCount++] = '-';
+                        cheksum ^= '-';
+                    }
+                    out[outCount++] = ',';
+
+
+                    out[outCount++] = 'A';
+                    out[outCount++] = '1';
+                    out[outCount++] = '0';
+                    out[outCount++] = '0';
+                    out[outCount++] = '0';
+                    out[outCount++] = '=';
+                    if(rollingAverage.count >= 1000) {
+                        num = rollingAverage.avrg1000;
+                        wholePart = (uint32_t)num;
+                        fractionPart = ((num - wholePart) * 100) + 0.5;
+                        wholePart += fractionPart / 100;
+                        count = 0;
+                        do {
+                            digits[count++] = '0' + (wholePart % 10);
+                            wholePart /= 10;
+                        }while(wholePart);
+                        for(count--; count >= 0; count--) {
+                            out[outCount++] = digits[count];
+                            cheksum ^= digits[count];
+                        }
+
+                        out[outCount++] = '.';
+                        cheksum ^= '.';
+                        ch = '0' + ((fractionPart / 10) % 10);
+                        out[outCount++] = ch;
+                        cheksum ^= ch;
+                        ch = '0' + (fractionPart % 10);
+                        out[outCount++] = ch;
+                        cheksum ^= ch;
+                    }
+                    else {
+                        out[outCount++] = '-';
+                        cheksum ^= '-';
+                    }
                     out[outCount++] = ',';
 
 
@@ -237,4 +421,14 @@ void latencyInit()
     IntEnable(INT_TIMER0A);
     IntEnable(INT_TIMER2A);
     IntEnable(INT_TIMER2B);
+}
+
+void resetAverages(void)
+{
+    rollingAverage.avrg90 = 0;
+    rollingAverage.avrg500 = 0;
+    rollingAverage.avrg1000 = 0;
+    rollingAverage.count = 0;
+    rollingAverage.oldest = 0;
+    rollingAverage.write = 0;
 }
