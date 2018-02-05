@@ -17,7 +17,6 @@ C_SRCS += \
 ../latency.c \
 ../main.c \
 ../pps_leds.c \
-../pwm.c \
 ../system_tick.c \
 ../tm4c1294ncpdt_startup_ccs.c \
 ../uart_io.c 
@@ -28,7 +27,6 @@ C_DEPS += \
 ./latency.d \
 ./main.d \
 ./pps_leds.d \
-./pwm.d \
 ./system_tick.d \
 ./tm4c1294ncpdt_startup_ccs.d \
 ./uart_io.d 
@@ -39,7 +37,6 @@ OBJS += \
 ./latency.obj \
 ./main.obj \
 ./pps_leds.obj \
-./pwm.obj \
 ./system_tick.obj \
 ./tm4c1294ncpdt_startup_ccs.obj \
 ./uart_io.obj 
@@ -50,7 +47,6 @@ OBJS__QUOTED += \
 "latency.obj" \
 "main.obj" \
 "pps_leds.obj" \
-"pwm.obj" \
 "system_tick.obj" \
 "tm4c1294ncpdt_startup_ccs.obj" \
 "uart_io.obj" 
@@ -61,7 +57,6 @@ C_DEPS__QUOTED += \
 "latency.d" \
 "main.d" \
 "pps_leds.d" \
-"pwm.d" \
 "system_tick.d" \
 "tm4c1294ncpdt_startup_ccs.d" \
 "uart_io.d" 
@@ -72,7 +67,6 @@ C_SRCS__QUOTED += \
 "../latency.c" \
 "../main.c" \
 "../pps_leds.c" \
-"../pwm.c" \
 "../system_tick.c" \
 "../tm4c1294ncpdt_startup_ccs.c" \
 "../uart_io.c" 

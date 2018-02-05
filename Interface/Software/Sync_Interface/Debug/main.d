@@ -14,7 +14,6 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/uart.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/gpio.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/watchdog.h
 main.obj: ../uart_io.h
-main.obj: ../pwm.h
 main.obj: ../latency.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/pin_map.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/interrupt.h
@@ -39,7 +38,6 @@ C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/uart.h:
 C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/gpio.h: 
 C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/watchdog.h: 
 ../uart_io.h: 
-../pwm.h: 
 ../latency.h: 
 C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/pin_map.h: 
 C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/interrupt.h: 

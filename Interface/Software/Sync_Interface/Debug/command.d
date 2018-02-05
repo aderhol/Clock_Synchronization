@@ -14,7 +14,6 @@ command.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/_isfuncdcl
 command.obj: ../uart_io.h
 command.obj: C:/ti/TivaWare_C_Series-2.1.4.178/inc/hw_memmap.h
 command.obj: ../latency.h
-command.obj: ../pwm.h
 command.obj: ../i2c_io.h
 
 ../command.c: 
@@ -31,5 +30,4 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/_isfuncdcl.h:
 ../uart_io.h: 
 C:/ti/TivaWare_C_Series-2.1.4.178/inc/hw_memmap.h: 
 ../latency.h: 
-../pwm.h: 
 ../i2c_io.h: 

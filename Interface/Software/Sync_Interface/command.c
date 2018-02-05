@@ -8,7 +8,6 @@
 #include <ctype.h>
 #include "uart_io.h"
 #include "latency.h"
-#include "pwm.h"
 #include "i2c_io.h"
 
 extern void pulse(void);
@@ -17,9 +16,9 @@ extern uint32_t GPS_base;
 
 #define COMMAND_BUFFER_SIZE 10
 
-const static char* commands[] = {"forward", "help", "mode"/*, "measure"*/, "pulse", "pwm", "reset","sitrep", "temp", "view"};
-const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", " mode [gps/loopback]"/*, " measure {number of measurements to be performed (1-127)}"*/, " pulse", " PWM set [PWM-clock-ticks (period)] [PWM-clock-ticks (pulse-width)]\r\n         period [PWM-clock-ticks]\r\n         pulse-width [PWM-clock-ticks]\r\n     get", " reset averages\r\n", " sitrep", " temp", " view [on/off] [device]"};
-enum {FORWARD, HELP, MODE/*, MEASURE*/, PULSE, PWM, RESET, SITREP, TEMP, VIEW};
+const static char* commands[] = {"forward", "help", "mode", "reset","sitrep", "temp", "view"};
+const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", " mode [gps1/gps2/loopback]", " reset averages", " sitrep", " temp", " view [on/off] [device]"};
+enum {FORWARD, HELP, MODE, RESET, SITREP, TEMP, VIEW};
 
 static void getCommands(uint32_t);
 static uint8_t* FetchCommand(void);
@@ -179,7 +178,7 @@ void execute(uint8_t* command_in, uint32_t base) {
                         }
                     }
                     else
-                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: mode [gps/loopback]\r\n");
+                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: mode [gps1/gps2/loopback]\r\n");
                     break;
                 case FORWARD:
                     if(count > 3 && (strcmp(tokens[1], "to") == 0)){
@@ -237,86 +236,15 @@ void execute(uint8_t* command_in, uint32_t base) {
                     UARTPrint(base, "°C.\r\n***\r\n");}
                     break;
                 case HELP: //help
-                    for(start = 0; start < sizeof(usage) / sizeof(usage[0]); start++) {
-                        //UARTPrint(base, "");
-                        UARTPrint(base, usage[start]);
-                        UARTPrint(base, "\r\n");
-                        if(count > 1)
-                            UARTPrint(base, "\r\n Syntax error!\r\n Usage: sitrep\r\n");
-                    }
-                    break;
-                case PWM: //PWM
-                    if(strcmp(tokens[1], "set") == 0 && count == 4){
-                        if(strcmp(tokens[2], "period") == 0) {
-                            char* endptr;
-                            long period;
-                            errno = 0;
-                            period = strtol(tokens[3], &endptr, 10);
-                            if(endptr == tokens[3] || errno == ERANGE) {
-                                errno = 0;
-                                UARTPrint(base, " Invalid command!\r\n");
-                            }
-                            else {
-                                PWMPeriodSet(period);
-                                UARTPrint(base, " PWM period set to ");
-                                UARTPrint(base, tokens[3]);
-                                UARTPrint(base, " PWM clock-ticks.\r\n");
-                            }
-                            break;
-                        }
-                        if(strcmp(tokens[2], "pulse-width") == 0) {
-                            char* endptr;
-                            long pw;
-                            errno = 0;
-                            pw = strtol(tokens[3], &endptr, 10);
-                            if(endptr == tokens[3] || errno == ERANGE) {
-                                errno = 0;
-                                UARTPrint(base, " Invalid command!\r\n");
-                            }
-                            else {
-                                PWMPulseSet(pw);
-                                UARTPrint(base, " PWM pulse-width set to ");
-                                UARTPrint(base, tokens[3]);
-                                UARTPrint(base, " PWM clock-ticks.\r\n");
-                            }
-                            break;
-                        }
-                        char* endptr;
-                        long period, pw;
-                        errno = 0;
-                        period = strtol(tokens[2], &endptr, 10);
-                        if(endptr == tokens[2] || errno == ERANGE) {
-                            errno = 0;
-                            UARTPrint(base, " Invalid command!\r\n");
-                            break;
-                        }
-
-                        errno = 0;
-                        pw = strtol(tokens[3], &endptr, 10);
-                        if(endptr == tokens[3] || errno == ERANGE) {
-                            errno = 0;
-                            UARTPrint(base, " Invalid command!\r\n");
-                            break;
-                        }
-                        PWMPeriodSet(period);
-                        PWMPulseSet(pw);
-                        UARTPrint(base, " PWM period set to ");
-                        UARTPrint(base, tokens[2]);
-                        UARTPrint(base, " PWM clock-ticks.\r\n");
-                        UARTPrint(base, " PWM pulse-width set to ");
-                        UARTPrint(base, tokens[3]);
-                        UARTPrint(base, " PWM clock-ticks.\r\n");
-                    }
+                    if(count > 1)
+                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: help\r\n");
                     else {
-                        if(strcmp(tokens[1], "get") == 0 && count == 2) {
-                            UARTPrint(base, " Period: ");
-                            UARTPrint_i32(base, PWMPeriodeGet());
-                            UARTPrint(base, " PWM clock-ticks\r\n Pulse-Width: ");
-                            UARTPrint_i32(base, PWMPulseGet());
-                            UARTPrint(base, " PWM clock-ticks\r\n");
+                        UARTPrint(base, "\r\n***********HELP***********\r\n");
+                        for(start = 0; start < sizeof(usage) / sizeof(usage[0]); start++) {
+                            UARTPrint(base, usage[start]);
+                            UARTPrint(base, "\r\n");
                         }
-                        else
-                            UARTPrint(base, " Invalid command!\r\n");
+                        UARTPrint(base, "**************************\r\n\r\n");
                     }
                     break;
                 case SITREP: //sitrep
@@ -324,35 +252,6 @@ void execute(uint8_t* command_in, uint32_t base) {
                     if(count > 1)
                         UARTPrint(base, "\r\n Syntax error!\r\n Usage: sitrep\r\n");
                     break;
-                case PULSE: //pulse
-                    pulse();
-                    if(count > 1)
-                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: pulse\r\n");
-                    break;
-                /*case MEASURE: //measure
-                    if(count == 1)
-                        measureLatency(1);
-                    else if(count == 2) {
-                        char* endptr;
-                        long c;
-                        c = strtol(tokens[1], &endptr, 10);
-                        if(c <= INT8_MAX && c > 0)
-                            measureLatency((int8_t) c);
-                        else
-                            if(c <= 0) {
-                                UARTPrint(UART0_BASE, "\r\n Syntax error!\r\n Usage:");
-                                UARTPrint(UART0_BASE, usage[MEASURE]);
-                                UARTPrint(UART0_BASE, "\r\n");
-                            }
-                            else
-                                UARTPrint(UART0_BASE, "\r\n Specified number is too large!\r\n Maximum is: 127\r\n");
-                    }
-                    else {
-                        UARTPrint(UART0_BASE, "\r\n Syntax error!\r\n Usage:");
-                        UARTPrint(UART0_BASE, usage[MEASURE]);
-                        UARTPrint(UART0_BASE, "\r\n");
-                    }
-                    break;*/
                 default:
                     UARTPrint(base, " Unimplemented command!\r\n");
                     break;
@@ -363,5 +262,4 @@ void execute(uint8_t* command_in, uint32_t base) {
 
         }
     }
-    //UARTPrint(UART0_BASE, "\r\n\r\n> ");
 }

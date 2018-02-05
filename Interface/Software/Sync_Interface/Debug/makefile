@@ -15,7 +15,6 @@ ORDERED_OBJS += \
 "./latency.obj" \
 "./main.obj" \
 "./pps_leds.obj" \
-"./pwm.obj" \
 "./system_tick.obj" \
 "./tm4c1294ncpdt_startup_ccs.obj" \
 "./uart_io.obj" \
@@ -164,8 +163,8 @@ Sync_Interface.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "command.obj" "i2c_io.obj" "latency.obj" "main.obj" "pps_leds.obj" "pwm.obj" "system_tick.obj" "tm4c1294ncpdt_startup_ccs.obj" "uart_io.obj" 
-	-$(RM) "command.d" "i2c_io.d" "latency.d" "main.d" "pps_leds.d" "pwm.d" "system_tick.d" "tm4c1294ncpdt_startup_ccs.d" "uart_io.d" 
+	-$(RM) "command.obj" "i2c_io.obj" "latency.obj" "main.obj" "pps_leds.obj" "system_tick.obj" "tm4c1294ncpdt_startup_ccs.obj" "uart_io.obj" 
+	-$(RM) "command.d" "i2c_io.d" "latency.d" "main.d" "pps_leds.d" "system_tick.d" "tm4c1294ncpdt_startup_ccs.d" "uart_io.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

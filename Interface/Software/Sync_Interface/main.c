@@ -9,7 +9,6 @@
 #include "driverlib/gpio.h" //GPIO
 #include "driverlib/watchdog.h"
 #include "uart_io.h"  //UART functionalities
-#include "pwm.h"
 #include "latency.h"
 #include "driverlib/pin_map.h"  //pin names
 #include "driverlib/interrupt.h"    //interrupt API
@@ -20,14 +19,10 @@
 #include "i2c_io.h"
 #include "pps_leds.h"
 
-//#define PULSE_ON //makes the pulse command available, disables pwm
-
 #define SYS_CLK_FREQ 120000000
 uint32_t SYS_CLK_FREQ_ACTUAL;
 
 void init(void);
-
-//static char stringBuilder[101];
 
 int main(void)
 {
@@ -40,20 +35,8 @@ int main(void)
 
     while(1)
     {
-        //WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
+        WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
     }
-}
-
-void pulse(void)
-{
-#ifdef PULSE_ON
-    GPIOPinWrite(GPIO_PORTG_BASE, GPIO_PIN_1, 0xF);
-    SysCtlDelay(250);
-    GPIOPinWrite(GPIO_PORTG_BASE, GPIO_PIN_1, 0);
-    UARTPrint(UART0_BASE, " Pulse sent!\r\n");
-#else
-    UARTPrint(UART0_BASE, " This functionality is not available!\r\n");
-#endif
 }
 
 void wdtInit(void)
@@ -94,22 +77,13 @@ void init(void)
 
     FPUEnable();
 
-   // wdtInit();
+   wdtInit();
 
     UARTInit();
     i2cInit();
     latencyInit();
     PPSLEDsInit();
     SysTickInit();
-
-#ifdef PULSE_ON
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOG));
-    GPIOPinTypeGPIOOutput(GPIO_PORTG_BASE, GPIO_PIN_1);
-    GPIOPinWrite(GPIO_PORTG_BASE, GPIO_PIN_1, 0);
-#else
-    //PWMInit();
-#endif
 
     IntMasterEnable();  //enables unmasked interrupts
 }
