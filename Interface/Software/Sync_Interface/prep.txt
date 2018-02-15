@@ -1,0 +1,126 @@
+# 1 "uart_io.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "uart_io.c"
+# 14 "uart_io.c"
+typedef struct {
+    int32_t writePtr;
+    int32_t readPtr;
+    uint8_t data[128];
+} ringbuffer;
+
+static ringbuffer uartwrite;
+static ringbuffer uartread;
+
+extern uint32_t SYS_CLK_FREQ_ACTUAL;
+
+void UARTPrint(uint32_t base, const uint8_t* message)
+{
+    while((*message) != '\0')
+        UARTCharPut(base, *(message++));
+}
+
+
+void UARTPrint_i32(uint32_t base, int32_t num) {
+    unsigned char out[11];
+    int_fast8_t count = 0;
+    if(num < 0) {
+        UARTCharPut(base, '-');
+        num *= -1;
+    }
+    do {
+        out[count++] = '0' + (num % 10);
+        num /= 10;
+    }while(num);
+    for(count--; count >= 0; count--)
+        UARTCharPut(base, out[count]);
+}
+
+void UARTInit(void)
+{
+
+    if(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)) {
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    }
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_UART0));
+
+
+    GPIOPinConfigure(GPIO_PA0_U0RX);
+    GPIOPinConfigure(GPIO_PA1_U0TX);
+
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+
+
+    UARTConfigSetExpClk(UART0_BASE, SYS_CLK_FREQ_ACTUAL, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+    UARTFIFOEnable(UART0_BASE);
+    UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX1_8, UART_FIFO_RX6_8);
+    UARTIntEnable(UART0_BASE, (UART_INT_RT | UART_INT_RX));
+    IntEnable(INT_UART0);
+
+    uartread.writePtr = 0;
+    uartread.readPtr = 0;
+    uartwrite.writePtr = 0;
+    uartwrite.readPtr = 0;
+}
+
+void putch(uint8_t ch) {
+
+    while (((uartwrite.writePtr + 1) % 128) == uartwrite.readPtr);
+    uartwrite.data[uartwrite.writePtr] = ch;
+    uartwrite.writePtr = ((uartwrite.writePtr + 1) % 128);
+}
+
+bool uartHasData() {
+    return uartread.writePtr != uartread.readPtr;
+}
+
+uint8_t getch(void) {
+    uint8_t ret;
+
+    while (uartread.writePtr == uartread.readPtr);
+    ret = uartread.data[uartread.readPtr];
+    uartread.readPtr = ((uartread.readPtr + 1) % 128);
+    return ret;
+}
+
+void ISR_UART0(void)
+{
+    static uint8_t line[101];
+    static uint_fast8_t count = 0;
+
+    uint32_t callers = UARTIntStatus(UART0_BASE, true);
+    UARTIntClear(UART0_BASE, callers);
+
+    if(callers & (UART_INT_RT | UART_INT_RX)){
+        while(UARTCharsAvail(UART0_BASE)){
+            uint_fast8_t ch = UARTCharGetNonBlocking(UART0_BASE);
+            if(ch == '\n'){
+                if(line[count - 1] == '\r')
+                    line[count - 1] = '\0';
+                else
+                    line[count] = '\0';
+
+                count = 0;
+
+                AddCommand(line);
+            }
+            else
+                if(ch != '\0') {
+                    if(count == 100)
+                        ;
+                    if(ch == '\b')
+                        count = (count == 0) ? 0 : count - 1;
+                    else
+                        line[count++] = ch;
+                }
+        }
+    }
+
+
+    if((callers - (UART_INT_RT | UART_INT_RX)) && (callers - UART_INT_RT) && (callers - UART_INT_RX)) {
+
+
+    }
+}

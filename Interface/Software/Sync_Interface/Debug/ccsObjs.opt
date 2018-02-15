@@ -1,0 +1,1 @@
+"./command.obj" "./i2c_io.obj" "./latency.obj" "./main.obj" "./pps_leds.obj" "./system_tick.obj" "./tm4c1294ncpdt_startup_ccs.obj" "./uart_io.obj" "C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/ccs/Debug/driverlib.lib" "../tm4c1294ncpdt.cmd" -llibc.a 

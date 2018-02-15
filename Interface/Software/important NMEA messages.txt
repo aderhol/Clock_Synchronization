@@ -1,0 +1,12 @@
+jamming
+	$PMTK838,1*2C
+	
+	no:		$PMTKSPF,1*5A
+	maybe:	$PMTKSPF,2*59
+	yes:	$PMTKSPF,3*58
+baud:
+	$PMTK251,[baud]*xx
+	$PMTK251,115200*1F
+PPS:
+	always:	$PMTK285,4,100*38
+			$PMTK285,4,500*3C
