@@ -26,7 +26,7 @@ typedef struct {
 } UARTDisableElement;
 
 bool show_gps = true, show_line = false;
-uint32_t GPS_base = UART4_BASE;
+uint32_t GPS_base = UART3_BASE;
 
 static ringbuffer uartwriteBuffer_0, uartreadBuffer_0,  uartwriteBuffer_3, uartreadBuffer_3, uartwriteBuffer_4, uartreadBuffer_4, uartwriteBuffer_6, uartreadBuffer_6;
 
