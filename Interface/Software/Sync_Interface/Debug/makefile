@@ -10,7 +10,7 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./bridge.obj" \
+"./UART_controller.obj" \
 "./clock.obj" \
 "./command.obj" \
 "./i2c_io.obj" \
@@ -150,7 +150,7 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 Sync_Interface.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C1294NCPDT -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"Sync_Interface.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Sync_Interface_linkInfo.xml" --rom_model -o "Sync_Interface.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --opt_for_speed=0 --define=ccs="ccs" --define=PART_TM4C1294NCPDT -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"Sync_Interface.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Sync_Interface_linkInfo.xml" --rom_model -o "Sync_Interface.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -165,8 +165,8 @@ Sync_Interface.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "bridge.obj" "clock.obj" "command.obj" "i2c_io.obj" "latency.obj" "main.obj" "pps_leds.obj" "system_tick.obj" "tm4c1294ncpdt_startup_ccs.obj" "uart_io.obj" 
-	-$(RM) "bridge.d" "clock.d" "command.d" "i2c_io.d" "latency.d" "main.d" "pps_leds.d" "system_tick.d" "tm4c1294ncpdt_startup_ccs.d" "uart_io.d" 
+	-$(RM) "UART_controller.obj" "clock.obj" "command.obj" "i2c_io.obj" "latency.obj" "main.obj" "pps_leds.obj" "system_tick.obj" "tm4c1294ncpdt_startup_ccs.obj" "uart_io.obj" 
+	-$(RM) "UART_controller.d" "clock.d" "command.d" "i2c_io.d" "latency.d" "main.d" "pps_leds.d" "system_tick.d" "tm4c1294ncpdt_startup_ccs.d" "uart_io.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

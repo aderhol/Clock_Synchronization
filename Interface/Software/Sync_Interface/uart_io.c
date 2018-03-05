@@ -20,10 +20,17 @@ typedef struct {
     uint8_t data[RINGBUFFER_SIZE];
 } ringbuffer;
 
+typedef struct {
+    uint32_t base;
+    bool valid;
+} UARTDisableElement;
+
 bool show_gps = true, show_line = false;
 uint32_t GPS_base = UART4_BASE;
 
 static ringbuffer uartwriteBuffer_0, uartreadBuffer_0,  uartwriteBuffer_3, uartreadBuffer_3, uartwriteBuffer_4, uartreadBuffer_4, uartwriteBuffer_6, uartreadBuffer_6;
+
+static UARTDisableElement UARTDisableList[10] = {{0, false}};
 
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
 
@@ -159,7 +166,55 @@ void UARTInit(void)
     uartwriteBuffer_6.readPtr = 0;
 }
 
-void UARTPutch(uint32_t base, uint8_t ch) {
+void UARTClearBuffers(uint32_t base)
+{
+    ringbuffer *Tx = baseToBuffer(base, true), *Rx = baseToBuffer(base, false);
+    Tx->readPtr = 0;
+    Tx->writePtr = 0;
+    Rx->readPtr = 0;
+    Rx->writePtr = 0;
+}
+
+
+void UARTDisableBase(uint32_t base)
+{
+    int_fast8_t i;
+    for(i = 0; UARTDisableList[i].valid && (i < (sizeof(UARTDisableList) / sizeof(UARTDisableList[0]))); i++)
+        if(UARTDisableList[i].base == base)
+            return;
+    if(i == (sizeof(UARTDisableList) / sizeof(UARTDisableList[0])))
+        while(1);
+    UARTDisableList[i].valid = true;
+    UARTDisableList[i].base = base;
+}
+
+void UARTEnableBase(uint32_t base)
+{
+    int_fast8_t i;
+    for(i = 0; UARTDisableList[i].valid && (i < sizeof(UARTDisableList) / sizeof(UARTDisableList[0])); i++)
+        if(UARTDisableList[i].base == base){
+            UARTDisableList[i].valid = false;
+            for(; (i < ((sizeof(UARTDisableList) / sizeof(UARTDisableList[0])) - 1)) && UARTDisableList[i + 1].valid; i++) {
+                UARTDisableList[i].valid = true;
+                UARTDisableList[i].base = UARTDisableList[i + 1].base;
+                UARTDisableList[i + 1].valid = false;
+            }
+            return;
+        }
+}
+
+void UARTPutch(uint32_t base, uint8_t ch)
+{
+    int_fast8_t i;
+
+    for(i = 0; (i < sizeof(UARTDisableList) / sizeof(UARTDisableList[0])) && UARTDisableList[i].valid; i++)
+        if(UARTDisableList[i].base == base)
+            return;
+
+    UARTPutchElev(base, ch);
+}
+
+void UARTPutchElev(uint32_t base, uint8_t ch) {
     ringbuffer* buffer = baseToBuffer(base, true);
     if((buffer->writePtr != buffer->readPtr) || !UARTCharPutNonBlocking(base, ch)) {
         //blocks while buffer is full
@@ -178,7 +233,20 @@ bool uartHasData(uint32_t base) {
     return buffer->writePtr != buffer->readPtr;
 }
 
-uint8_t UARTGetch(uint32_t base) {
+
+
+uint8_t UARTGetch(uint32_t base)
+{
+    int_fast8_t i;
+
+    for(i = 0; (i < sizeof(UARTDisableList) / sizeof(UARTDisableList[0])) && UARTDisableList[i].valid; i++)
+        if(UARTDisableList[i].base == base)
+            return 0;
+
+    return UARTGetchElev(base);
+}
+
+uint8_t UARTGetchElev(uint32_t base) {
     ringbuffer* buffer = baseToBuffer(base, false);
     uint8_t ret;
     //blocks while buffer is empty
@@ -186,6 +254,15 @@ uint8_t UARTGetch(uint32_t base) {
     ret = buffer->data[buffer->readPtr];
     buffer->readPtr = ringptrinc(buffer->readPtr);
     return ret;
+}
+
+bool UARTGetchElev_NB(uint32_t base, uint8_t* ch)
+{
+    if(uartHasData(base)){
+        *ch = UARTGetchElev(base);
+        return true;
+    }
+    return false;
 }
 
 //PC
@@ -333,8 +410,8 @@ void UARTTransferGPSData(void)
                 message[count++] = '\n';
                 message[count] = '\0';
                 if(show_gps){
-                    UARTPrint(UART0_BASE, message);
-                    UARTPrint(UART6_BASE, message);
+                    UARTPrint(UART0_BASE, message); //PC
+                    UARTPrint(UART6_BASE, message); //line
                 }
             }
             state = listen;

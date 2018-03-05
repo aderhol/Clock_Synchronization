@@ -16,7 +16,15 @@ void UARTPutch(uint32_t, uint8_t);
 void UARTPutch_NB(uint32_t, uint8_t);
 bool uartHasData(uint32_t);
 uint8_t UARTGetch(uint32_t);
+uint8_t UARTGetchElev(uint32_t);
+bool UARTGetch_NB(uint32_t, uint8_t*);
 void UARTConnect(void);
 void UARTDisconnect(void);
+void UARTTransferGPSData(void);
+void UARTTransferLineData(void);
+void UARTPutchElev(uint32_t, uint8_t);
+void UARTDisableBase(uint32_t);
+void UARTEnableBase(uint32_t);
+void UARTClearBuffers(uint32_t);
 
 #endif

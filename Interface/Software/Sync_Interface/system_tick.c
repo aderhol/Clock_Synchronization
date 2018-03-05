@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "driverlib/systick.h"
 #include "system_tick.h"
+#include "UART_controller.h"
 
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
 
@@ -10,14 +11,9 @@ void SysTickInit(void) {
     SysTickIntEnable();
 }
 
-extern void CommandInterpreter(void);
-extern void UARTTransferGPSData(void);
-extern void UARTTransferLineData(void);
 extern void PPSLEDsService(void);
 
 void ISR_SysTick(void) {
-    CommandInterpreter();
-    UARTTransferGPSData();
-    UARTTransferLineData();
+    UARTHandler();
     PPSLEDsService();
 }

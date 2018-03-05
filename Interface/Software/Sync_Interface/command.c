@@ -10,7 +10,7 @@
 #include "latency.h"
 #include "i2c_io.h"
 #include "clock.h"
-#include "bridge.h"
+#include "UART_controller.h"
 
 extern void pulse(void);
 extern void InterruptConfigFaultISR(const uint8_t*);
@@ -153,11 +153,11 @@ void execute(uint8_t* command_in, uint32_t base) {
                         char* portNames[] = {"gps1", "gps2", "pc", "line"};
                         enum{GPS1 = 0, GPS2, PC, LINE};
                         uint_fast8_t ports = 0, ports_temp = 0;
-                        volatile uint_fast8_t i, b;
+                        uint_fast8_t i;
 
                         for(i = 0; ((!ports) && (i < (sizeof(portNames)/sizeof(portNames[0])))); i++)
                             ports = (!strcmp(portNames[i], tokens[2])) << i;
-                        if(i == (sizeof(portNames)/sizeof(portNames[0]))){
+                        if(!ports){
                             UARTPrint(base, "\r\n Syntax error!\r\n device (");
                             UARTPrint(base, tokens[2]);
                             UARTPrint(base, ") doesn't exists\r\n");
@@ -165,13 +165,39 @@ void execute(uint8_t* command_in, uint32_t base) {
                         }
                         for(i = 0; ((!ports_temp) && (i < (sizeof(portNames)/sizeof(portNames[0])))); i++)
                             ports |= ports_temp = (!strcmp(portNames[i], tokens[4])) << i;
-                        if(i == (sizeof(portNames)/sizeof(portNames[0]))){
+                        if(!ports_temp){
                             UARTPrint(base, "\r\n Syntax error!\r\n device (");
                             UARTPrint(base, tokens[4]);
                             UARTPrint(base, ") doesn't exists\r\n");
                             break;
                         }
-UARTPrint(base, " ");
+
+                        switch(ports){
+                        case ((1 << GPS1) | (1 << GPS2)):
+                                UARTPrint(base, "\r\n Usage error! \r\n GPS1 and GPS2 cannot be bridged.\r\n");
+                                break;
+                        case ((1 << GPS1) | (1 << PC)): //GPS1 and PC
+                                UARTPrint(base, "\r\n Unimplemented!\r\n");
+                                break;
+                        case ((1 << GPS1) | (1 << LINE)):   //GPS1 and line
+                                UARTPrint(base, "\r\n Unimplemented!\r\n");
+                                break;
+                        case ((1 << GPS2) | (1 << PC)): //GPS2 and PC
+                                UARTPrint(base, "\r\n Unimplemented!\r\n");
+                                break;
+                        case ((1 << GPS2) | (1 << LINE)):   //GPS2 and line
+                                if(!strcmp(tokens[1], "on"))
+                                    bridgeGPS22Line();
+                                else
+                                    unBridgeGPS2FromLine();
+                                break;
+                        case ((1 << PC) | (1 << LINE)): //PC and line
+                                if(!strcmp(tokens[1], "on"))
+                                    bridgePC2Line();
+                                else
+                                    unBridgePCFromLine();
+                                break;
+                        }
                     }
                     else
                         UARTPrint(base, "\r\n Syntax error!\r\n Usage: bridge [on/off] [device_1] and [device_2]\r\n");
