@@ -18,6 +18,9 @@
 #include "driverlib/pwm.h"
 #include "i2c_io.h"
 #include "pps_leds.h"
+#include "clock.h"
+
+#define WDT_OFF
 
 #define SYS_CLK_FREQ 120000000
 uint32_t SYS_CLK_FREQ_ACTUAL;
@@ -35,7 +38,9 @@ int main(void)
 
     while(1)
     {
+#ifndef WDT_OFF
         WatchdogReloadSet(WATCHDOG0_BASE, SYS_CLK_FREQ_ACTUAL / 2);
+#endif
     }
 }
 
@@ -77,12 +82,15 @@ void init(void)
 
     FPUEnable();
 
-   wdtInit();
+#ifndef WDT_OFF
+    wdtInit();
+#endif
 
     UARTInit();
     i2cInit();
     latencyInit();
     PPSLEDsInit();
+    clockInit();
     SysTickInit();
 
     IntMasterEnable();  //enables unmasked interrupts

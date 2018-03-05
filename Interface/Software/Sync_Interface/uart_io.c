@@ -109,7 +109,7 @@ void UARTInit(void)
     //configures UART pins (input/output)
     GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5); //USB & GPS_2
     GPIOPinTypeUART(GPIO_PORTK_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-    GPIOPinTypeUART(GPIO_PORTP_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    GPIOPinTypeUART(GPIO_PORTP_BASE, GPIO_PIN_0 | GPIO_PIN_1);  //line
 
     //configure the UART modules
     //UART0(USB):   baud-rate: 115200,  8-bit, 1 STOP-bit, no parity-bit
@@ -188,6 +188,7 @@ uint8_t UARTGetch(uint32_t base) {
     return ret;
 }
 
+//PC
 void ISR_UART0(void)
 {
     uint32_t callers = UARTIntStatus(UART0_BASE, true);  //determines what triggered the interrupt
@@ -379,4 +380,15 @@ void UARTTransferLineData(void)
             }
         }
     }
+}
+
+void UARTDisconnect(void)
+{
+    GPIOPinTypeGPIOInput(GPIO_PORTP_BASE, GPIO_PIN_1);
+}
+
+void UARTConnect(void)
+{
+    GPIOPinConfigure(GPIO_PP1_U6TX);
+    GPIOPinTypeUART(GPIO_PORTP_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 }

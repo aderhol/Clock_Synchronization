@@ -12,6 +12,8 @@ LIB_SRCS += \
 C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/ccs/Debug/driverlib.lib 
 
 C_SRCS += \
+../bridge.c \
+../clock.c \
 ../command.c \
 ../i2c_io.c \
 ../latency.c \
@@ -22,6 +24,8 @@ C_SRCS += \
 ../uart_io.c 
 
 C_DEPS += \
+./bridge.d \
+./clock.d \
 ./command.d \
 ./i2c_io.d \
 ./latency.d \
@@ -32,6 +36,8 @@ C_DEPS += \
 ./uart_io.d 
 
 OBJS += \
+./bridge.obj \
+./clock.obj \
 ./command.obj \
 ./i2c_io.obj \
 ./latency.obj \
@@ -42,6 +48,8 @@ OBJS += \
 ./uart_io.obj 
 
 OBJS__QUOTED += \
+"bridge.obj" \
+"clock.obj" \
 "command.obj" \
 "i2c_io.obj" \
 "latency.obj" \
@@ -52,6 +60,8 @@ OBJS__QUOTED += \
 "uart_io.obj" 
 
 C_DEPS__QUOTED += \
+"bridge.d" \
+"clock.d" \
 "command.d" \
 "i2c_io.d" \
 "latency.d" \
@@ -62,6 +72,8 @@ C_DEPS__QUOTED += \
 "uart_io.d" 
 
 C_SRCS__QUOTED += \
+"../bridge.c" \
+"../clock.c" \
 "../command.c" \
 "../i2c_io.c" \
 "../latency.c" \

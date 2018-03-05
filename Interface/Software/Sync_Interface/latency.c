@@ -13,6 +13,7 @@
 #include "uart_io.h"
 #include "i2c_io.h"
 #include "pps_leds.h"
+#include "clock.h"
 
 extern void InterruptConfigFaultISR(const uint8_t*);
 extern uint32_t SYS_CLK_FREQ_ACTUAL;
@@ -74,6 +75,8 @@ void ISR_TIMER2_A(void)
 {
     uint32_t callers = TimerIntStatus(TIMER2_BASE, true) & (~TIMER_CAPB_EVENT);   //determines what triggered the interrupt
     TimerIntClear(TIMER2_BASE, callers);    //clears the interrupt flags
+
+    clockSync();
 
     if(callers & TIMER_CAPA_EVENT){  //expected interrupt?
         //UARTPrint(UART0_BASE, "\r\n----------\r\n");

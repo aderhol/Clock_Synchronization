@@ -23,6 +23,7 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/fpu.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/pwm.h
 main.obj: ../i2c_io.h
 main.obj: ../pps_leds.h
+main.obj: ../clock.h
 
 ../main.c: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/stdint.h: 
@@ -47,3 +48,4 @@ C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/fpu.h:
 C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/pwm.h: 
 ../i2c_io.h: 
 ../pps_leds.h: 
+../clock.h: 

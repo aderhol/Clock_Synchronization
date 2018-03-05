@@ -16,5 +16,7 @@ void UARTPutch(uint32_t, uint8_t);
 void UARTPutch_NB(uint32_t, uint8_t);
 bool uartHasData(uint32_t);
 uint8_t UARTGetch(uint32_t);
+void UARTConnect(void);
+void UARTDisconnect(void);
 
 #endif

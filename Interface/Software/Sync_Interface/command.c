@@ -9,6 +9,8 @@
 #include "uart_io.h"
 #include "latency.h"
 #include "i2c_io.h"
+#include "clock.h"
+#include "bridge.h"
 
 extern void pulse(void);
 extern void InterruptConfigFaultISR(const uint8_t*);
@@ -16,9 +18,9 @@ extern uint32_t GPS_base;
 
 #define COMMAND_BUFFER_SIZE 10
 
-const static char* commands[] = {"forward", "help", "mode", "reset","sitrep", "temp", "view"};
-const static char* usage[] = {" forward to [device] [message]\r\n                     >[command]"," help", " mode [gps1/gps2/loopback]", " reset averages", " sitrep", " temp", " view [on/off] [device]"};
-enum {FORWARD, HELP, MODE, RESET, SITREP, TEMP, VIEW};
+const static char* commands[] = {"bridge", "clock", "forward", "help", "mode", "reset","sitrep", "temp", "view"};
+const static char* usage[] = {" bridge [on/off] [device_1] and [device_2]", " clock [on/off]", " forward to [device] [message]\r\n                     >[command]"," help", " mode [gps1/gps2/loopback]", " reset averages", " sitrep", " temp", " view [on/off] [device]"};
+enum {BRIDGE, CLOCK, FORWARD, HELP, MODE, RESET, SITREP, TEMP, VIEW};
 
 static void getCommands(uint32_t);
 static uint8_t* FetchCommand(void);
@@ -146,6 +148,55 @@ void execute(uint8_t* command_in, uint32_t base) {
 
             if(cmd != -1) {
                 switch(cmd) {
+                case BRIDGE:
+                    if(count == 5 && (!strcmp(tokens[1], "on") || !strcmp(tokens[1], "off")) && !strcmp(tokens[3], "and") && strcmp(tokens[2], tokens[4])){
+                        char* portNames[] = {"gps1", "gps2", "pc", "line"};
+                        enum{GPS1 = 0, GPS2, PC, LINE};
+                        uint_fast8_t ports = 0, ports_temp = 0;
+                        volatile uint_fast8_t i, b;
+
+                        for(i = 0; ((!ports) && (i < (sizeof(portNames)/sizeof(portNames[0])))); i++)
+                            ports = (!strcmp(portNames[i], tokens[2])) << i;
+                        if(i == (sizeof(portNames)/sizeof(portNames[0]))){
+                            UARTPrint(base, "\r\n Syntax error!\r\n device (");
+                            UARTPrint(base, tokens[2]);
+                            UARTPrint(base, ") doesn't exists\r\n");
+                            break;
+                        }
+                        for(i = 0; ((!ports_temp) && (i < (sizeof(portNames)/sizeof(portNames[0])))); i++)
+                            ports |= ports_temp = (!strcmp(portNames[i], tokens[4])) << i;
+                        if(i == (sizeof(portNames)/sizeof(portNames[0]))){
+                            UARTPrint(base, "\r\n Syntax error!\r\n device (");
+                            UARTPrint(base, tokens[4]);
+                            UARTPrint(base, ") doesn't exists\r\n");
+                            break;
+                        }
+UARTPrint(base, " ");
+                    }
+                    else
+                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: bridge [on/off] [device_1] and [device_2]\r\n");
+                    break;
+                case CLOCK:
+                    if(count == 2){
+                        if(strcmp(tokens[1], "on") == 0){
+                            UARTDisconnect();
+                            clockConnect();
+                            UARTPrint(base, "\r\n Clock is now ON.\r\n");
+                        }
+                        else if(strcmp(tokens[1], "off") == 0){
+                            clockDisconnect();
+                            UARTConnect();
+                            UARTPrint(base, "\r\n Clock is now OFF.\r\n");
+                        }
+                        else{
+                            UARTPrint(base, "\r\n Syntax error!\r\n Usage: clock [on/off]\r\n");
+                            break;
+                        }
+                    }
+                    else
+                        UARTPrint(base, "\r\n Syntax error!\r\n Usage: clock [on/off]\r\n");
+
+                    break;
                 case RESET:
                     if(count == 2){
                         if(strcmp(tokens[1], "averages") == 0){

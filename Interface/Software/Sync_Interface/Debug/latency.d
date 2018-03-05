@@ -18,6 +18,7 @@ latency.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/sysctl.h
 latency.obj: ../uart_io.h
 latency.obj: ../i2c_io.h
 latency.obj: ../pps_leds.h
+latency.obj: ../clock.h
 
 ../latency.c: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/stdint.h: 
@@ -37,3 +38,4 @@ C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/sysctl.h:
 ../uart_io.h: 
 ../i2c_io.h: 
 ../pps_leds.h: 
+../clock.h: 
