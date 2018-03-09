@@ -13,6 +13,7 @@ ORDERED_OBJS += \
 "./UART_controller.obj" \
 "./clock.obj" \
 "./command.obj" \
+"./eeprom_io.obj" \
 "./i2c_io.obj" \
 "./latency.obj" \
 "./main.obj" \
@@ -165,8 +166,8 @@ Sync_Interface.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "UART_controller.obj" "clock.obj" "command.obj" "i2c_io.obj" "latency.obj" "main.obj" "pps_leds.obj" "system_tick.obj" "tm4c1294ncpdt_startup_ccs.obj" "uart_io.obj" 
-	-$(RM) "UART_controller.d" "clock.d" "command.d" "i2c_io.d" "latency.d" "main.d" "pps_leds.d" "system_tick.d" "tm4c1294ncpdt_startup_ccs.d" "uart_io.d" 
+	-$(RM) "UART_controller.obj" "clock.obj" "command.obj" "eeprom_io.obj" "i2c_io.obj" "latency.obj" "main.obj" "pps_leds.obj" "system_tick.obj" "tm4c1294ncpdt_startup_ccs.obj" "uart_io.obj" 
+	-$(RM) "UART_controller.d" "clock.d" "command.d" "eeprom_io.d" "i2c_io.d" "latency.d" "main.d" "pps_leds.d" "system_tick.d" "tm4c1294ncpdt_startup_ccs.d" "uart_io.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

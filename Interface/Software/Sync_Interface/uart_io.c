@@ -229,6 +229,10 @@ void UARTPutchElev(uint32_t base, uint8_t ch) {
 }
 
 bool uartHasData(uint32_t base) {
+    int i;
+    for(i = 0; (i < sizeof(UARTDisableList) / sizeof(UARTDisableList[0])) && UARTDisableList[i].valid; i++)
+        if(UARTDisableList[i].base == base)
+            return false;
     ringbuffer* buffer = baseToBuffer(base, false);
     return buffer->writePtr != buffer->readPtr;
 }
@@ -258,7 +262,8 @@ uint8_t UARTGetchElev(uint32_t base) {
 
 bool UARTGetchElev_NB(uint32_t base, uint8_t* ch)
 {
-    if(uartHasData(base)){
+    ringbuffer* buffer = baseToBuffer(base, false);
+    if(buffer->writePtr != buffer->readPtr){
         *ch = UARTGetchElev(base);
         return true;
     }

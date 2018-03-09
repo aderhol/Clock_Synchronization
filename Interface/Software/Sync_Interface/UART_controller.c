@@ -51,6 +51,7 @@ void unBridgePCFromLine(void) {
     UARTTransferLineDataEnable = true;
     UARTTransferGPSDataEnable = true;
     bridged = false;
+    UARTPrint(UART0_BASE, "\r\n PC and line is now UNbridged.\r\n");
 }
 
 void bridgePC2Line_bridge(void){
@@ -146,6 +147,7 @@ bool bridgeGPS22Line(void)
     UARTDisableBase(UART3_BASE);
     UARTClearBuffers(UART3_BASE);
     bridgeGPS2LineEnable = true;
+    UARTPrint(UART0_BASE, "\r\n GPS2 and line is now bridged.\r\n");
     return 1;
 }
 
@@ -160,6 +162,7 @@ void unBridgeGPS2FromLine(void)
     UARTEnableBase(UART6_BASE);
     UARTTransferLineDataEnable = true;
     bridged = false;
+    UARTPrint(UART0_BASE, "\r\n GPS2 and line is now UNbridged.\r\n");
 }
 
 

@@ -11,6 +11,12 @@
 #include "i2c_io.h"
 #include "clock.h"
 #include "UART_controller.h"
+#include "eeprom_io.h"
+
+#define GPSBASE_DEFAULT     2
+#define LOOPBACK_DEFAULT    0
+#define SHOWGPS_DEFAULT     1
+#define SHOWLINE_DEFAULT    0
 
 extern void pulse(void);
 extern void InterruptConfigFaultISR(const uint8_t*);
@@ -19,7 +25,7 @@ extern uint32_t GPS_base;
 #define COMMAND_BUFFER_SIZE 10
 
 const static char* commands[] = {"bridge", "clock", "forward", "help", "mode", "reset","sitrep", "temp", "view"};
-const static char* usage[] = {" bridge [on/off] [device_1] and [device_2]", " clock [on/off]", " forward to [device] [message]\r\n                     >[command]"," help", " mode [gps1/gps2/loopback]", " reset averages", " sitrep", " temp", " view [on/off] [device]"};
+const static char* usage[] = {" bridge [on/off] [device_1] and [device_2]", " clock [on/off]", " forward to [device] [message]\r\n                     >[command]"," help", " mode [gps1/gps2/loopback]", " reset averages\r\n       setup", " sitrep", " temp", " view [on/off] [device]"};
 enum {BRIDGE, CLOCK, FORWARD, HELP, MODE, RESET, SITREP, TEMP, VIEW};
 
 static void getCommands(uint32_t);
@@ -31,7 +37,7 @@ static bool empty = true;
 static inline bool push(uint8_t* command)
 {
     if(readPtr != writePtr || empty){
-        strcpy(buffer[writePtr], command);
+        strcpy((char*)buffer[writePtr], (char*)command);
         writePtr = (writePtr + 1) % COMMAND_BUFFER_SIZE;
         empty = false;
         return true;
@@ -88,7 +94,7 @@ static inline  uint8_t* FetchCommand(void) {
     if(temp == NULL)
         return NULL;
     else {
-        strcpy(holster, temp);
+        strcpy((char*)holster, (char*)temp);
         return holster;
     }
 }
@@ -114,7 +120,7 @@ void execute(uint8_t* command_in, uint32_t base) {
 
     char* tokens[15];
     char command[101];
-    strcpy(command, command_in);
+    strcpy(command, (char*)command_in);
     int_fast8_t count = 0; //number of tokens
 
     //to lower case (whole command)
@@ -159,7 +165,7 @@ void execute(uint8_t* command_in, uint32_t base) {
                             ports = (!strcmp(portNames[i], tokens[2])) << i;
                         if(!ports){
                             UARTPrint(base, "\r\n Syntax error!\r\n device (");
-                            UARTPrint(base, tokens[2]);
+                            UARTPrint(base, (uint8_t*)tokens[2]);
                             UARTPrint(base, ") doesn't exists\r\n");
                             break;
                         }
@@ -167,36 +173,43 @@ void execute(uint8_t* command_in, uint32_t base) {
                             ports |= ports_temp = (!strcmp(portNames[i], tokens[4])) << i;
                         if(!ports_temp){
                             UARTPrint(base, "\r\n Syntax error!\r\n device (");
-                            UARTPrint(base, tokens[4]);
+                            UARTPrint(base, (uint8_t*)tokens[4]);
                             UARTPrint(base, ") doesn't exists\r\n");
                             break;
                         }
 
-                        switch(ports){
+                        switch (ports) {
                         case ((1 << GPS1) | (1 << GPS2)):
-                                UARTPrint(base, "\r\n Usage error! \r\n GPS1 and GPS2 cannot be bridged.\r\n");
-                                break;
+                            UARTPrint(
+                                    base,
+                                    "\r\n Usage error! \r\n GPS1 and GPS2 cannot be bridged.\r\n");
+                            break;
                         case ((1 << GPS1) | (1 << PC)): //GPS1 and PC
-                                UARTPrint(base, "\r\n Unimplemented!\r\n");
-                                break;
+                            UARTPrint(base, "\r\n Unimplemented!\r\n");
+                            break;
                         case ((1 << GPS1) | (1 << LINE)):   //GPS1 and line
-                                UARTPrint(base, "\r\n Unimplemented!\r\n");
-                                break;
+                            UARTPrint(base, "\r\n Unimplemented!\r\n");
+                            break;
                         case ((1 << GPS2) | (1 << PC)): //GPS2 and PC
-                                UARTPrint(base, "\r\n Unimplemented!\r\n");
-                                break;
+                            UARTPrint(base, "\r\n Unimplemented!\r\n");
+                            break;
                         case ((1 << GPS2) | (1 << LINE)):   //GPS2 and line
-                                if(!strcmp(tokens[1], "on"))
-                                    bridgeGPS22Line();
-                                else
-                                    unBridgeGPS2FromLine();
-                                break;
+                            if (!strcmp(tokens[1], "on")){
+                                bridgeGPS22Line();
+                            }
+                            else{
+                                unBridgeGPS2FromLine();
+                            }
+                            break;
                         case ((1 << PC) | (1 << LINE)): //PC and line
-                                if(!strcmp(tokens[1], "on"))
-                                    bridgePC2Line();
-                                else
-                                    unBridgePCFromLine();
-                                break;
+                            if (!strcmp(tokens[1], "on")){
+                                UARTPrint(base, "\r\n Bridging PC and line..\r\n");
+                                bridgePC2Line();
+                            }
+                            else{
+                                unBridgePCFromLine();
+                            }
+                            break;
                         }
                     }
                     else
@@ -227,6 +240,14 @@ void execute(uint8_t* command_in, uint32_t base) {
                     if(count == 2){
                         if(strcmp(tokens[1], "averages") == 0){
                             resetAverages();
+                            UARTPrint(base, "\r\n Averages have been reset.\r\n");
+                        }
+                        else if(strcmp(tokens[1], "setup") == 0){
+                            setUp(true);
+                            clockDisconnect();
+                            unBridgeGPS2FromLine();
+                            unBridgePCFromLine();
+                            UARTPrint(base, "\r\n Default setup has been applied.\r\n");
                         }
                         else{
                             UARTPrint(base, "\r\n Syntax error!\r\n Usage: reset averages\r\n");
@@ -241,13 +262,21 @@ void execute(uint8_t* command_in, uint32_t base) {
                         if(strcmp(tokens[1], "gps1") == 0){
                             measureLatency(true);
                             GPS_base = UART4_BASE;
+                            writeWithVerification(GPSBASE_EEPROM_ADDRESS, 1);
+                            writeWithVerification(LOOPBACK_EEPROM_ADDRESS, 0);
+                            UARTPrint(base, "\r\n Role is set to GPS1 receiver.\r\n");
                         }
                         else if(strcmp(tokens[1], "gps2") == 0){
                             measureLatency(true);
                             GPS_base = UART3_BASE;
+                            writeWithVerification(GPSBASE_EEPROM_ADDRESS, 2);
+                            writeWithVerification(LOOPBACK_EEPROM_ADDRESS, 0);
+                            UARTPrint(base, "\r\n Role is set to GPS2 receiver.\r\n");
                         }
                         else if(strcmp(tokens[1], "loopback") == 0){
                             measureLatency(false);
+                            writeWithVerification(LOOPBACK_EEPROM_ADDRESS, 1);
+                            UARTPrint(base, "\r\n Role is set to master clock emulator (PPS loopback).\r\n");
                         }
                         else{
                             UARTPrint(base, "\r\nInvalid mode.\r\n");
@@ -260,7 +289,7 @@ void execute(uint8_t* command_in, uint32_t base) {
                 case FORWARD:
                     if(count > 3 && (strcmp(tokens[1], "to") == 0)){
                         if(strcmp(tokens[2], "line") == 0){
-                            UARTPrint(UART6_BASE, command_in + 16); //+16, so that the front gets cut off
+                            UARTPrint(UART6_BASE, command_in + 16); //+16, so that the front gets cut off (forward to line )
                             UARTPrint(UART6_BASE, "\r\n");
                         }
                         else{
@@ -268,7 +297,7 @@ void execute(uint8_t* command_in, uint32_t base) {
                             break;
                         }
                         UARTPrint(base, "\r\nMessage forwarded to ");
-                        UARTPrint(base, tokens[2]);
+                        UARTPrint(base, (uint8_t*)tokens[2]);
                         UARTPrint(base, ".\r\n");
                     }
                     else
@@ -287,18 +316,20 @@ void execute(uint8_t* command_in, uint32_t base) {
                         }
                         if(strcmp(tokens[2], "gps") == 0){
                             show_gps = comnd;
+                            writeWithVerification(SHOWGPS_EEPROM_ADDRESS, (comnd ? 1 : 0));
                         }
                         else if(strcmp(tokens[2], "line") == 0){
                             show_line = comnd;
+                            writeWithVerification(SHOWLINE_EEPROM_ADDRESS, (comnd ? 1 : 0));
                         }
                         else{
                             UARTPrint(base, "\r\nUnkonwn device.\r\n");
                             break;
                         }
                         UARTPrint(base, "\r\nView for ");
-                        UARTPrint(base, tokens[2]);
+                        UARTPrint(base, (uint8_t*)tokens[2]);
                         UARTPrint(base, " is now ");
-                        UARTPrint(base, tokens[1]);
+                        UARTPrint(base, (uint8_t*)tokens[1]);
                         UARTPrint(base, ".\r\n");
                     }
                     else
@@ -318,7 +349,7 @@ void execute(uint8_t* command_in, uint32_t base) {
                     else {
                         UARTPrint(base, "\r\n***********HELP***********\r\n");
                         for(start = 0; start < sizeof(usage) / sizeof(usage[0]); start++) {
-                            UARTPrint(base, usage[start]);
+                            UARTPrint(base, (const uint8_t*)usage[start]);
                             UARTPrint(base, "\r\n");
                         }
                         UARTPrint(base, "**************************\r\n\r\n");
@@ -338,5 +369,62 @@ void execute(uint8_t* command_in, uint32_t base) {
                 UARTPrint(base, " Invalid command!\r\n");
 
         }
+    }
+}
+
+void setUp(bool defaultSetUp)
+{
+    uint16_t gpsbase, loopback, showgps, showline;
+    if(defaultSetUp){
+        writeWithVerification(GPSBASE_EEPROM_ADDRESS, gpsbase = GPSBASE_DEFAULT);
+        writeWithVerification(LOOPBACK_EEPROM_ADDRESS, loopback = LOOPBACK_DEFAULT);
+        writeWithVerification(SHOWGPS_EEPROM_ADDRESS, showgps = SHOWGPS_DEFAULT);
+        writeWithVerification(SHOWLINE_EEPROM_ADDRESS, showline = SHOWLINE_DEFAULT);
+    }
+    else{
+        if(!getVerifiedValue(GPSBASE_EEPROM_ADDRESS, &gpsbase) || (gpsbase != 1 && gpsbase != 2))
+            writeWithVerification(GPSBASE_EEPROM_ADDRESS, gpsbase = GPSBASE_DEFAULT);
+        if(!getVerifiedValue(LOOPBACK_EEPROM_ADDRESS, &loopback) || (loopback != 0 && loopback != 1))
+            writeWithVerification(LOOPBACK_EEPROM_ADDRESS, loopback = LOOPBACK_DEFAULT);
+        if(!getVerifiedValue(SHOWGPS_EEPROM_ADDRESS, &showgps) || (showgps != 0 && showgps != 1))
+            writeWithVerification(SHOWGPS_EEPROM_ADDRESS, showgps = SHOWGPS_DEFAULT);
+        if(!getVerifiedValue(SHOWLINE_EEPROM_ADDRESS, &showline) || (showline != 0 && showline != 1))
+            writeWithVerification(SHOWLINE_EEPROM_ADDRESS, showline = SHOWLINE_DEFAULT);
+    }
+
+    switch(gpsbase){
+    case 1:
+        GPS_base = UART4_BASE;
+        break;
+    case 2:
+        GPS_base = UART3_BASE;
+        break;
+    }
+
+    switch(loopback){
+    case 0:
+        measureLatency(true);
+        break;
+    case 1:
+        measureLatency(false);
+        break;
+    }
+
+    switch(showgps){
+    case 0:
+        show_gps = false;
+        break;
+    case 1:
+        show_gps = true;
+        break;
+    }
+
+    switch(showline){
+    case 0:
+        show_line = false;
+        break;
+    case 1:
+        show_line = true;
+        break;
     }
 }

@@ -17,6 +17,7 @@ command.obj: ../latency.h
 command.obj: ../i2c_io.h
 command.obj: ../clock.h
 command.obj: ../UART_controller.h
+command.obj: ../eeprom_io.h
 
 ../command.c: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include/stdint.h: 
@@ -35,3 +36,4 @@ C:/ti/TivaWare_C_Series-2.1.4.178/inc/hw_memmap.h:
 ../i2c_io.h: 
 ../clock.h: 
 ../UART_controller.h: 
+../eeprom_io.h: 

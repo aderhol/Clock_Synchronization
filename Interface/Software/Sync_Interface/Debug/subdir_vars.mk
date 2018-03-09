@@ -15,6 +15,7 @@ C_SRCS += \
 ../UART_controller.c \
 ../clock.c \
 ../command.c \
+../eeprom_io.c \
 ../i2c_io.c \
 ../latency.c \
 ../main.c \
@@ -27,6 +28,7 @@ C_DEPS += \
 ./UART_controller.d \
 ./clock.d \
 ./command.d \
+./eeprom_io.d \
 ./i2c_io.d \
 ./latency.d \
 ./main.d \
@@ -39,6 +41,7 @@ OBJS += \
 ./UART_controller.obj \
 ./clock.obj \
 ./command.obj \
+./eeprom_io.obj \
 ./i2c_io.obj \
 ./latency.obj \
 ./main.obj \
@@ -51,6 +54,7 @@ OBJS__QUOTED += \
 "UART_controller.obj" \
 "clock.obj" \
 "command.obj" \
+"eeprom_io.obj" \
 "i2c_io.obj" \
 "latency.obj" \
 "main.obj" \
@@ -63,6 +67,7 @@ C_DEPS__QUOTED += \
 "UART_controller.d" \
 "clock.d" \
 "command.d" \
+"eeprom_io.d" \
 "i2c_io.d" \
 "latency.d" \
 "main.d" \
@@ -75,6 +80,7 @@ C_SRCS__QUOTED += \
 "../UART_controller.c" \
 "../clock.c" \
 "../command.c" \
+"../eeprom_io.c" \
 "../i2c_io.c" \
 "../latency.c" \
 "../main.c" \

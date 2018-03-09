@@ -19,8 +19,10 @@
 #include "i2c_io.h"
 #include "pps_leds.h"
 #include "clock.h"
+#include "eeprom_io.h"
+#include "command.h"
 
-#define WDT_OFF
+//#define WDT_OFF
 
 #define SYS_CLK_FREQ 120000000
 uint32_t SYS_CLK_FREQ_ACTUAL;
@@ -30,6 +32,7 @@ void init(void);
 int main(void)
 {
     init();
+    setUp(false);
     if(SysCtlResetCauseGet() & SYSCTL_CAUSE_WDOG0){
         SysCtlResetCauseClear(SYSCTL_CAUSE_WDOG0);
         UARTPrint(UART0_BASE, "\r\n\r\n########################## WDT RESET #########################\r\n\r\n");
@@ -86,6 +89,7 @@ void init(void)
     wdtInit();
 #endif
 
+    EEPROMIOInit();
     UARTInit();
     i2cInit();
     latencyInit();
