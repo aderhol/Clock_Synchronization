@@ -13,6 +13,7 @@ using System.IO.Ports;
 using System.Management;
 using System.Text.RegularExpressions;
 
+
 namespace DelayMeasurement
 {
     public partial class mainWindow : Form
@@ -20,11 +21,14 @@ namespace DelayMeasurement
         private Measurement measurement = null;
         private CommonOpenFileDialog folderSelecter;
         private string[] COMPorts;
-        /*Task COMPortRefresher;*/
+        private bool isMeasurementRunning = false;
         CancellationTokenSource Cancel_COMPortRefresher;
+        CancellationTokenSource Cancel_elapsedTimeCounter;
         public mainWindow()
         {
             InitializeComponent();
+
+            label_elapsedTime.Visible = false;
 
             folderSelecter = new CommonOpenFileDialog();
             folderSelecter.EnsurePathExists = true;
@@ -148,15 +152,74 @@ namespace DelayMeasurement
             keyevent.Handled = false;
         }
 
-        private void button_start_Click(object sender, EventArgs e)
+        private void button_start_Click(object sender, EventArgs args)
         {
-            try
+            if (!isMeasurementRunning)
             {
-                measurement = new Measurement();
-            }
-            catch(Exception)
-            {
+                if(COMPorts.Length == 0 || comboBox_COM.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Select a COM port!");
+                    return;
+                }
+                try
+                {
+                    measurement = new Measurement(COMPorts[comboBox_COM.SelectedIndex], textBox_ip.Text, textBox_directory.Text, textBox_loadSaveFile.Text, comboBox_COM.SelectedIndex);
+                }
+                catch (Exception e)
+                {
+                    /*switch(e.Message)
+                    {
+                       
+                    }*/
+                    MessageBox.Show(e.Message);
+                }
 
+                Cancel_COMPortRefresher.Cancel();
+                button_start.Text = "Stop measurement";
+                textBox_ip.Enabled = false;
+                textBox_directory.Enabled = false;
+                textBox_loadSaveFile.Enabled = false;
+                radioButton_configure.Enabled = false;
+                radioButton_leaveAlone.Enabled = false;
+                radioButton_loadAndSave.Enabled = false;
+                button_Browse.Enabled = false;
+                button_Browse_loadSaveFile.Enabled = false;
+                label_IP.Enabled = false;
+                label_COM.Enabled = false;
+                label_directory.Enabled = false;
+                label_loadSaveFile.Enabled = false;
+                comboBox_COM.Enabled = false;
+                label_elapsedTime.Text = "Elapsed time: 00:00:00";
+                label_elapsedTime.Visible = true;
+                Cancel_elapsedTimeCounter = new CancellationTokenSource();
+                elapsedTimeCounter(Cancel_elapsedTimeCounter.Token);
+                isMeasurementRunning = true;
+            }
+            else
+            {
+                try
+                {
+                    measurement.Close();
+                }
+                catch(Exception) { }
+                COMPortRefresher(Cancel_COMPortRefresher.Token);
+                button_start.Text = "Start measurement";
+                textBox_ip.Enabled = true;
+                textBox_directory.Enabled = true;
+                textBox_loadSaveFile.Enabled = true;
+                radioButton_configure.Enabled = true;
+                radioButton_leaveAlone.Enabled = true;
+                radioButton_loadAndSave.Enabled = true;
+                button_Browse.Enabled = true;
+                button_Browse_loadSaveFile.Enabled = true;
+                label_IP.Enabled = true;
+                label_COM.Enabled = true;
+                label_directory.Enabled = true;
+                label_loadSaveFile.Enabled = true;
+                comboBox_COM.Enabled = true;
+                label_elapsedTime.Visible = false; ;
+                Cancel_elapsedTimeCounter.Cancel();
+                isMeasurementRunning = false;
             }
 
             
@@ -206,6 +269,19 @@ namespace DelayMeasurement
                 label_loadSaveFile.Visible = false;
                 textBox_loadSaveFile.Visible = false;
                 button_Browse_loadSaveFile.Visible = false;
+            }
+        }
+        private async void elapsedTimeCounter(CancellationToken cancellationRequest)
+        {
+            DateTime start = DateTime.UtcNow;
+            while(!cancellationRequest.IsCancellationRequested)
+            {
+                label_elapsedTime.Text = "Elapsed time: ";
+                TimeSpan elapsedTime = DateTime.UtcNow.Subtract(start);
+                if (elapsedTime.TotalDays >= 1)
+                    label_elapsedTime.Text += Convert.ToInt32(elapsedTime.TotalDays) + "days ";
+                label_elapsedTime.Text += elapsedTime.ToString(@"hh\:mm\:ss");
+                await Task.Delay(1000);
             }
         }
     }

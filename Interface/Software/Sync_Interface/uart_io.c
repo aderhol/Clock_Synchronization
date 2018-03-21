@@ -366,15 +366,18 @@ void ISR_UART6(void)
 
 typedef enum {
     listen,     //start character has not been received
-    collect,    //start character has been received
-    cr,         //carriage return has been received
-}GPS_NMEA_MessageState;
+    collect_NMEA,    //start character has been received
+    collect_TSIP,    //start character has been received
+    cr_NMEA,         //carriage return has been received
+    cr_TSIP,         //ending 0x10
+}GPS_MessageState;
 
+#define messageMaxIndex  (400 -1)
 void UARTTransferGPSData(void)
 {
-    static uint8_t message[83];
+    static uint8_t message[messageMaxIndex + 1];
     static int_fast8_t count = 0;
-    static GPS_NMEA_MessageState state = listen;
+    static GPS_MessageState state = listen;
     static uint32_t base;
 
     if(GPS_base != base){
@@ -388,29 +391,60 @@ void UARTTransferGPSData(void)
         switch(state) {
         case listen:
             if(ch == '!' || ch == '$') {
-                state = collect;
+                state = collect_NMEA;
                 message[0] = ch;
                 count = 1;
             }
+            else if(ch == 0x10){
+                state = collect_TSIP;
+                count = 0;
+                message[count++] ='$';
+                message[count++] ='G';
+                message[count++] ='P';
+                message[count++] ='T';
+                message[count++] ='S';
+                message[count++] ='I';
+                message[count++] ='P';
+            }
             break;
-        case collect:
+        case collect_NMEA:
             if(ch != '!' && ch != '$' && ch != '\r' && ch != '\n' && count < 81) //if a simple message character is received and the NMEA defined character count is not exceeded
                 message[count++] = ch;
-            else if (ch == '\r' && count < 82) {    //if a carriage return is received
-                state = cr;
+            else if (ch == '\r' && count < messageMaxIndex) {    //if a carriage return is received
+                state = cr_NMEA;
                 message[count++] = ch;
             }
             else if (ch == '!' || ch == '$') {  //if beginning of new message character received
-                state = collect;
+                state = collect_NMEA;
                 message[0] = ch;
                 count = 1;
             }
             else {  //not NMEA conform message detected
-                state = listen;
-                count = 0;
+                if(ch == 0x10){
+                    state = collect_TSIP;
+                    count = 0;
+                }
+                else{
+                    state = listen;
+                    count = 0;
+                }
             }
             break;
-        case cr:
+        case collect_TSIP:
+            if(count < messageMaxIndex - 2*3){
+                message[count++] = ',';
+                message[count++] = (ch / 16) < 9 ? ('0' + ch / 16) : ('A' + (ch / 16) - 9);
+                message[count++] = (ch % 16) < 9 ? ('0' + ch % 16) : ('A' + (ch % 16) - 9);
+                if(ch == 0x10)
+                    state = cr_TSIP;
+            }
+            else
+            {
+                message[1] = 'X';
+                count = 7;
+            }
+            break;
+        case cr_NMEA:
             if(ch == '\n') { //if closing line-feed received
                 message[count++] = '\n';
                 message[count] = '\0';
@@ -419,8 +453,35 @@ void UARTTransferGPSData(void)
                     UARTPrint(UART6_BASE, message); //line
                 }
             }
-            state = listen;
-            count = 0;
+            if(ch == 0x10){
+                state = collect_TSIP;
+                count = 0;
+            }
+            else{
+                state = listen;
+                count = 0;
+            }
+            break;
+        case cr_TSIP:
+            message[count++] = ',';
+            message[count++] = (ch / 16) < 9 ? ('0' + ch / 16) : ('A' + (ch / 16) - 9);
+            message[count++] = (ch % 16) < 9 ? ('0' + ch % 16) : ('A' + (ch % 16) - 9);
+            if(ch == 0x03){
+                count -= 2*3;
+                message[count++] = '\r';
+                message[count++] = '\n';
+                message[count++] = '\0';
+                if(show_gps){
+                    UARTPrint(UART0_BASE, message); //PC
+                    UARTPrint(UART6_BASE, message); //line
+                }
+                state = listen;
+                count = 0;
+            }
+            else
+            {
+                state = collect_TSIP;
+            }
             break;
         }
     }

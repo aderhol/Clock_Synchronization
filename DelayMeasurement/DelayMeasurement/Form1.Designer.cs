@@ -45,6 +45,7 @@
             this.label_loadSaveFile = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.label_elapsedTime = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label_IP
@@ -118,7 +119,7 @@
             // button_start
             // 
             this.button_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_start.Location = new System.Drawing.Point(12, 271);
+            this.button_start.Location = new System.Drawing.Point(12, 290);
             this.button_start.Name = "button_start";
             this.button_start.Size = new System.Drawing.Size(483, 75);
             this.button_start.TabIndex = 9;
@@ -192,12 +193,23 @@
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
+            // label_elapsedTime
+            // 
+            this.label_elapsedTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_elapsedTime.Location = new System.Drawing.Point(12, 256);
+            this.label_elapsedTime.Name = "label_elapsedTime";
+            this.label_elapsedTime.Size = new System.Drawing.Size(483, 31);
+            this.label_elapsedTime.TabIndex = 12;
+            this.label_elapsedTime.Text = "Elapsed time: 20 days 12:13:36";
+            this.label_elapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // mainWindow
             // 
             this.AcceptButton = this.button_start;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 358);
+            this.ClientSize = new System.Drawing.Size(507, 377);
+            this.Controls.Add(this.label_elapsedTime);
             this.Controls.Add(this.button_Browse_loadSaveFile);
             this.Controls.Add(this.textBox_loadSaveFile);
             this.Controls.Add(this.label_loadSaveFile);
@@ -241,6 +253,7 @@
         private System.Windows.Forms.Label label_loadSaveFile;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.Label label_elapsedTime;
     }
 }
 
