@@ -433,8 +433,8 @@ void UARTTransferGPSData(void)
         case collect_TSIP:
             if(count < messageMaxIndex - 2*3){
                 message[count++] = ',';
-                message[count++] = (ch / 16) < 9 ? ('0' + ch / 16) : ('A' + (ch / 16) - 9);
-                message[count++] = (ch % 16) < 9 ? ('0' + ch % 16) : ('A' + (ch % 16) - 9);
+                message[count++] = (ch / 16) < 10 ? ('0' + ch / 16) : ('A' + (ch / 16) - 10);
+                message[count++] = (ch % 16) < 10 ? ('0' + ch % 16) : ('A' + (ch % 16) - 10);
                 if(ch == 0x10)
                     state = cr_TSIP;
             }
@@ -464,8 +464,8 @@ void UARTTransferGPSData(void)
             break;
         case cr_TSIP:
             message[count++] = ',';
-            message[count++] = (ch / 16) < 9 ? ('0' + ch / 16) : ('A' + (ch / 16) - 9);
-            message[count++] = (ch % 16) < 9 ? ('0' + ch % 16) : ('A' + (ch % 16) - 9);
+            message[count++] = (ch / 16) < 10 ? ('0' + ch / 16) : ('A' + (ch / 16) - 10);
+            message[count++] = (ch % 16) < 10 ? ('0' + ch % 16) : ('A' + (ch % 16) - 10);
             if(ch == 0x03){
                 count -= 2*3;
                 message[count++] = '\r';
