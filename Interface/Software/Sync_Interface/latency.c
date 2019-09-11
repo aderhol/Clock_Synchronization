@@ -117,7 +117,7 @@ void ISR_TIMER2_B(void)
             else {
                 uint32_t timestampB = TimerValueGet(TIMER2_BASE, TIMER_B); //saves timestamp
                 if(timestampB + offset > timestamp) {   //checks if B has been captured after A
-                    uint8_t cheksum = 0x25/*0x4F*/, out[100] = {/*'\r', '\n', '>', '>', '>', */'$', 'G', 'P', 'I', 'N', 'F', ',', 'D', 'E', 'L', 'A', 'Y', '='};
+                    uint8_t cheksum = 0x22/*0x4F*/, out[100] = {/*'\r', '\n', '>', '>', '>', */'$', 'G', 'P', 'I', 'N', 'F', ',', 'D', 'E', 'L', 'A', 'Y', '='};
                     uint_fast8_t outCount = 13/*18*/, ch;
                     double num = ((double)(offset + timestampB - timestamp)) * (1000000000.0 / INPUT_CAPTURE_CLOCK_FREQUENCY);
 
